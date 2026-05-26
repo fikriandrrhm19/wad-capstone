@@ -27,6 +27,7 @@ app.get('/', (req, res) => {
   });
 });
 // Route API dengan prefix /api
+app.use('/', routes);
 app.use('/api', routes);
 // ─── 404 Handler ─────────────────────────────────────────────
 // Tangkap request ke route yang tidak ada
