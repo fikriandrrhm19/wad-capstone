@@ -12,3 +12,6 @@ Thumbs.db
 # Build output
 dist/
 build/
+# Postman local workspace
+postman/
+.postman/
