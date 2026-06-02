@@ -18,7 +18,7 @@ const getInfo = (req, res) => {
     res.status(200).json({
         name: config.appName,
         version: config.version,
-        environment: config.nodeEnv,
+        environment: config.env,
         node: process.version,
         endpoints: [
             {
