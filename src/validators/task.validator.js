@@ -8,27 +8,13 @@ const VALID_ORDER = ['asc', 'desc'];
 // Schema untuk CREATE task (POST /tasks)
 // Semua field wajib kecuali yang diberi .default()
 const createTaskSchema = Joi.object({
-    title: Joi.string().trim().min(1).max(200).required()
-        .messages({
-            'string.empty': 'title tidak boleh kosong.',
-            'string.max': 'title maksimal 200 karakter.',
-            'any.required': 'title wajib diisi.',
-        }),
+    title: Joi.string().trim().min(1).max(200).required(),
     description: Joi.string().trim().max(1000).optional().allow(''),
-    status: Joi.string().valid(...VALID_STATUS).default('todo')
-        .messages({
-            'any.only': `status harus salah satu dari:
-${VALID_STATUS.join(', ')}.`
-        }),
-    priority: Joi.string().valid(...VALID_PRIORITY).default('medium')
-        .messages({
-            'any.only': `priority harus salah satu dari:
-${VALID_PRIORITY.join(', ')}.`
-        }),
-    dueDate: Joi.date().iso().min('now').optional()
-        .messages({
-            'date.min': 'dueDate tidak boleh di masa lalu.'
-        }),
+    status: Joi.string().valid(...VALID_STATUS).default('todo'),
+    priority: Joi.string().valid(...VALID_PRIORITY).default('medium'),
+    dueDate: Joi.date().iso().min('now').optional(),
+    userId: Joi.number().integer().positive().required(),
+    categoryId: Joi.number().integer().positive().optional()
 });
 // Schema untuk FULL UPDATE (PUT /tasks/:id) — semua field wajib
 const replaceTaskSchema = Joi.object({
@@ -57,6 +43,5 @@ const listTasksSchema = Joi.object({
         offset: Joi.number().integer().min(0).default(0),
     });
     module.exports = {
-        createTaskSchema, replaceTaskSchema, updateTaskSchema,
-        listTasksSchema
+        createTaskSchema, replaceTaskSchema, updateTaskSchema, listTasksSchema
     };
