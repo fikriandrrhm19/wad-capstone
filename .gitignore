@@ -15,3 +15,5 @@ build/
 # Postman local workspace
 postman/
 .postman/
+
+/src/generated/prisma
