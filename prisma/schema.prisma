@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // ─── Model User ───────────────────────────────────────────
@@ -54,16 +53,9 @@ model Task {
   categoryId Int? // Nullable — task boleh tidak punya kategori
 
   // Relasi (Prisma menyimpan join logic)
-  user User @relation(
-    fields: [userId],
-    references: [id],
-    onDelete: Cascade
-  )
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  category Category? @relation(
-    fields: [categoryId],
-    references: [id]
-  )
+  category Category? @relation(fields: [categoryId], references: [id])
 
   // Index untuk mempercepat query filter
   @@index([userId])
