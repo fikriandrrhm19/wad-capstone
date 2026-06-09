@@ -28,8 +28,8 @@ const createTask = async (req, res, next) => {
     try {
         // Sementara hardcode userId=1 (autentikasi di Minggu 6)
         const task = await taskRepo.create({
-            ...req.body, userId:
-                req.body.userId || 1
+            ...req.body,
+            userId: req.user.userId
         });
         res.status(201).set('Location', `/api/v1/tasks/${task.id}`).json({
             data: task

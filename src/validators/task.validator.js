@@ -13,7 +13,7 @@ const createTaskSchema = Joi.object({
     status: Joi.string().valid(...VALID_STATUS).default('todo'),
     priority: Joi.string().valid(...VALID_PRIORITY).default('medium'),
     dueDate: Joi.date().iso().min('now').optional(),
-    userId: Joi.number().integer().positive().required(),
+    userId: Joi.number().integer().positive().optional(),
     categoryId: Joi.number().integer().positive().optional()
 });
 // Schema untuk FULL UPDATE (PUT /tasks/:id) — semua field wajib
