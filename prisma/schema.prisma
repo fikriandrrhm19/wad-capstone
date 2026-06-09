@@ -11,14 +11,14 @@ datasource db {
 
 model User {
   id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  name          String         @db.VarChar(100)
+  email         String         @unique @db.VarChar(255)
+  password      String         @db.VarChar(255)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 
-  // Relasi: satu user memiliki banyak task
-  tasks Task[]
+  tasks         Task[]
+  refreshTokens RefreshToken[]
 
   @@map("users") // Nama tabel di database: "users"
 }
@@ -64,6 +64,24 @@ model Task {
   @@index([userId, status]) // Composite index
 
   @@map("tasks")
+}
+
+// ─── Model RefreshToken ───────────────────────────────────
+
+model RefreshToken {
+  id         Int      @id @default(autoincrement())
+  token      String   @unique @db.VarChar(512)
+  userId     Int
+  expiresAt  DateTime
+  isRevoked  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+
+  @@map("refresh_tokens")
 }
 
 // ─── Enumerasi ────────────────────────────────────────────
