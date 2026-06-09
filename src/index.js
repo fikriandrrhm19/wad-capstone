@@ -4,6 +4,7 @@ const routes = require('./routes');
 const tasksRoutes = require('./routes/tasks.routes');
 const setupSwagger = require('./docs/swagger');
 const app = express();
+const usersRoutes = require('./routes/users.routes');
 // ─── Middleware Global ───────────────────────────────────────
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -21,6 +22,7 @@ app.use((req, res, next) => {
 app.use('/', routes); // /health
 app.use('/api', routes); // /api/info, /api/echo/:msg
 app.use('/api/v1/tasks', tasksRoutes); // /api/v1/tasks (CRUD)
+app.use('/api/v1/users', usersRoutes);
 // ─── Swagger UI ─────────────────────────────────────────────
 setupSwagger(app);
 // ─── 404 & Error Handlers ───────────────────────────────────
