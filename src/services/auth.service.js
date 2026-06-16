@@ -45,6 +45,7 @@ const authService = {
             const err = new Error('Email sudah terdaftar.');
             err.statusCode = 409;
             err.code = 'DUPLICATE_EMAIL';
+            err.details = [{ target: 'email', issue: 'Alamat email ini sudah digunakan oleh akun lain.' }];
             throw err;
         }
         // 2. Hash password dengan argon2id
@@ -65,6 +66,7 @@ const authService = {
             const err = new Error('Email atau password salah.');
             err.statusCode = 401;
             err.code = 'INVALID_CREDENTIALS';
+            err.details = [{ target: 'credentials', issue: 'Kombinasi email atau kata sandi tidak cocok.' }];
             throw err;
         }
         // 3. Verifikasi password dengan argon2
@@ -73,6 +75,7 @@ const authService = {
             const err = new Error('Email atau password salah.');
             err.statusCode = 401;
             err.code = 'INVALID_CREDENTIALS';
+            err.details = [{ target: 'credentials', issue: 'Kombinasi email atau kata sandi tidak cocok.' }];
             throw err;
         }
         // 4. Buat access token (short-lived: 15 menit)
@@ -102,7 +105,9 @@ const authService = {
             payload = jwt.verify(tokenString, config.jwt.refreshSecret);
         } catch (e) {
             const err = new Error('Refresh token tidak valid atau sudah expired.');
-            err.statusCode = 401; err.code = 'INVALID_REFRESH_TOKEN';
+            err.statusCode = 401; 
+            err.code = 'INVALID_REFRESH_TOKEN';
+            err.details = [{ target: 'refreshToken', issue: 'Sandi token akses pembaruan rusak atau kedaluwarsa.' }];
             throw err;
         }
         // 2. Cek apakah token ada dan valid di database
@@ -113,13 +118,17 @@ const authService = {
             // Revoke SEMUA token milik user ini sebagai tindakan pencegahan
             await refreshTokenRepo.revokeAllByUser(storedToken.userId);
             const err = new Error('Token mencurigakan terdeteksi. Silakan login ulang.');
-            err.statusCode = 401; err.code = 'TOKEN_REUSE_DETECTED';
+            err.statusCode = 401;
+            err.code = 'TOKEN_REUSE_DETECTED';
+            err.details = [{ target: 'refreshToken', issue: 'Deteksi penyalahgunaan token lama. Semua sesi dicabut demi keamanan.' }];
             throw err;
         }
         // 4. Token tidak ditemukan di DB (mungkin sudah di-delete atau tidak valid)
         if (!storedToken) {
             const err = new Error('Refresh token tidak ditemukan.');
-            err.statusCode = 401; err.code = 'INVALID_REFRESH_TOKEN';
+            err.statusCode = 401;
+            err.code = 'INVALID_REFRESH_TOKEN';
+            err.details = [{ target: 'refreshToken', issue: 'Token pembaruan tidak terdaftar di database.' }];
             throw err;
         }
         // 5. ROTATION: Revoke token lama

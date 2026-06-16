@@ -62,7 +62,7 @@ app.use((err, req, res, next) => {
             error: { 
                 code: err.code || 'AUTH_ERROR',
                 message: err.message,
-                details: [
+                details: err.details || [
                     { target: 'authentication', issue: 'Sesi token tidak valid atau telah kedaluwarsa.' }
                 ]
             },
@@ -70,12 +70,16 @@ app.use((err, req, res, next) => {
     }
     // Prisma P2002: email duplikat (sudah ada user dengan email tersebut)
     if (err.code === 'P2002') {
+        const conflictField = err.meta?.target ? err.meta.target.join(', ') : 'field';
         return res.status(409).json({
             error: {
                 code: 'DUPLICATE_RESOURCE',
                 message: 'Data sudah digunakan.',
                 details: [
-                    { target: conflictField, issue: `Nilai pada ${conflictField} melanggar aturan unique constraint database.` }
+                    { 
+                        target: conflictField, 
+                        issue: `Nilai pada kolom [${conflictField}] melanggar aturan unique constraint database.` 
+                    }
                 ]
             }
         });
