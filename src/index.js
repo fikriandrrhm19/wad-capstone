@@ -45,6 +45,12 @@ app.use((req, res) => {
             code: 'NOT_FOUND',
             message: `Route ${req.method} ${req.path} tidak ditemukan.`,
             hint: 'Kunjungi GET /api/docs untuk dokumentasi API.',
+            details: [
+                {
+                    target: 'routing',
+                    issue: `Endpoint dengan metode ${req.method} belum diimplementasikan di server.`
+                }
+            ]
         },
     });
 });
@@ -53,14 +59,24 @@ app.use((err, req, res, next) => {
     // Error dengan statusCode dari authService
     if (err.statusCode) {
         return res.status(err.statusCode).json({
-            error: { code: err.code || 'AUTH_ERROR', message: err.message },
+            error: { 
+                code: err.code || 'AUTH_ERROR',
+                message: err.message,
+                details: [
+                    { target: 'authentication', issue: 'Sesi token tidak valid atau telah kedaluwarsa.' }
+                ]
+            },
         });
     }
     // Prisma P2002: email duplikat (sudah ada user dengan email tersebut)
     if (err.code === 'P2002') {
         return res.status(409).json({
             error: {
-                code: 'DUPLICATE_RESOURCE', message: 'Data sudah digunakan.'
+                code: 'DUPLICATE_RESOURCE',
+                message: 'Data sudah digunakan.',
+                details: [
+                    { target: conflictField, issue: `Nilai pada ${conflictField} melanggar aturan unique constraint database.` }
+                ]
             }
         });
     }
@@ -69,6 +85,12 @@ app.use((err, req, res, next) => {
         error: {
             code: 'INTERNAL_ERROR',
             message: config.env === 'development' ? err.message : 'Terjadi kesalahan di server.',
+            details: [
+                { 
+                    target: 'server', 
+                    issue: config.env === 'development' ? err.stack.split('\n')[0] : 'Silakan hubungi administrator sistem.' 
+                }
+            ]
         }
     });
 });
