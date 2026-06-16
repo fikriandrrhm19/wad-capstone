@@ -19,6 +19,7 @@ model User {
 
   tasks         Task[]
   refreshTokens RefreshToken[]
+  milestones    Milestone[]
 
   @@map("users") // Nama tabel di database: "users"
 }
@@ -42,7 +43,7 @@ model Category {
 model Task {
   id          Int       @id @default(autoincrement())
   title       String
-  description String?   // Tanda ? berarti nullable/opsional
+  description String?   
   status      Status    @default(TODO)
   priority    Priority  @default(MEDIUM)
   dueDate     DateTime?
@@ -51,17 +52,18 @@ model Task {
 
   // Foreign Keys
   userId     Int
-  categoryId Int? // Nullable — task boleh tidak punya kategori
+  categoryId Int? 
+  milestoneId Int? // Nullable karena task boleh tidak punya milestone
 
   // Relasi (Prisma menyimpan join logic)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  category Category? @relation(fields: [categoryId], references: [id])
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category  Category?   @relation(fields: [categoryId], references: [id])
+  milestone Milestone?  @relation(fields: [milestoneId], references: [id], onDelete: SetNull) // Jika Milestone dihapus, task tidak ikut hilang melainkan set null
 
   // Index untuk mempercepat query filter
   @@index([userId])
   @@index([status])
-  @@index([userId, status]) // Composite index
+  @@index([userId, status])
 
   @@map("tasks")
 }
@@ -84,6 +86,28 @@ model RefreshToken {
   @@map("refresh_tokens")
 }
 
+// ─── Model Milestone ───────────
+
+model Milestone {
+  id          Int             @id @default(autoincrement())
+  title       String          @db.VarChar(255)
+  description String?         @db.Text
+  dueDate     DateTime
+  status      MilestoneStatus @default(PENDING)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  userId      Int
+
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks       Task[]          // Satu milestone menaungi array dari banyak task
+
+  @@index([userId])
+  @@index([status])
+
+  @@map("milestones")
+}
+
 // ─── Enumerasi ────────────────────────────────────────────
 
 enum Status {
@@ -96,4 +120,9 @@ enum Priority {
   LOW
   MEDIUM
   HIGH
+}
+
+enum MilestoneStatus {
+  PENDING
+  ACHIEVED
 }
