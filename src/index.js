@@ -6,6 +6,7 @@ const setupSwagger = require('./docs/swagger');
 const app = express();
 const usersRoutes = require('./routes/users.routes');
 const authRoutes = require('./routes/auth.routes');
+const milestonesRoutes = require('./routes/milestones.routes');
 const authenticate = require('./middleware/authenticate');
 
 // ─── Middleware Global ───────────────────────────────────────
@@ -34,6 +35,7 @@ app.use('/auth', authRoutes);
 app.use('/api/v1', authenticate);
 app.use('/api/v1/tasks', tasksRoutes);
 app.use('/api/v1/users', usersRoutes);
+app.use('/api/v1/milestones', milestonesRoutes);
 
 // ─── Swagger UI ─────────────────────────────────────────────
 setupSwagger(app);
