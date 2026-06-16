@@ -23,8 +23,8 @@ app.use((req, res, next) => {
 });
 
 // ─── Routes ─────────────────────────────────────────────────
-app.use('/', routes); // /health
-app.use('/api', routes); // /api/info, /api/echo/:msg
+//app.use('/health', routes); // /health
+app.use('/', routes); // /api/info, /api/echo/:msg
 
 // ─── Auth routes (tidak dilindungi) ────────────────────
 app.use('/auth', authRoutes);
