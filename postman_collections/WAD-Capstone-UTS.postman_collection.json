@@ -1080,6 +1080,77 @@
               "body": "{\n    \"data\": {\n        \"id\": 18,\n        \"title\": \"Setup Express server\",\n        \"description\": null,\n        \"status\": \"DONE\",\n        \"priority\": \"HIGH\",\n        \"dueDate\": null,\n        \"createdAt\": \"2026-06-16T15:42:30.196Z\",\n        \"updatedAt\": \"2026-06-16T15:42:30.196Z\",\n        \"userId\": 6,\n        \"categoryId\": 11,\n        \"milestoneId\": 7,\n        \"user\": {\n            \"id\": 6,\n            \"name\": \"Budi Santoso\",\n            \"email\": \"budi@example.com\"\n        },\n        \"category\": {\n            \"id\": 11,\n            \"name\": \"Proyek\",\n            \"color\": \"#10B981\"\n        }\n    }\n}"
             }
           ]
+        },
+        {
+          "name": "Verify Relation via Milestone Detail",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": [
+            {
+              "name": "Verify Relation via Milestone Detail",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYzMzU3MCwiZXhwIjoxNzgxNjM0NDcwLCJqdGkiOiI3YjUwZmU1NC1jOTBhLTRlOWItOGQwOS0zZWFjMThhOTg5NjAifQ.81rlX8oKjYzkfL7iSFlxxGSYyzOf6ToCss3SreWbssg",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:3000/api/v1/milestones/7",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "milestones",
+                    "7"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "759"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"2f7-P5ZW8XUfYOvvOdrBbw2VIdhy2vo\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 16 Jun 2026 18:13:02 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"id\": 7,\n        \"title\": \"Kick-off Pengembangan Aplikasi Web\",\n        \"description\": \"Inisialisasi server dasar dan routing utility selesai dikonfigurasi.\",\n        \"dueDate\": \"2026-07-01T00:00:00.000Z\",\n        \"status\": \"ACHIEVED\",\n        \"createdAt\": \"2026-06-16T15:42:30.174Z\",\n        \"updatedAt\": \"2026-06-16T15:42:30.174Z\",\n        \"userId\": 6,\n        \"tasks\": [\n            {\n                \"id\": 18,\n                \"title\": \"Setup Express server\",\n                \"description\": null,\n                \"status\": \"DONE\",\n                \"priority\": \"HIGH\",\n                \"dueDate\": null,\n                \"createdAt\": \"2026-06-16T15:42:30.196Z\",\n                \"updatedAt\": \"2026-06-16T15:42:30.196Z\",\n                \"userId\": 6,\n                \"categoryId\": 11,\n                \"milestoneId\": 7\n            },\n            {\n                \"id\": 20,\n                \"title\": \"Belajar REST API\",\n                \"description\": null,\n                \"status\": \"DONE\",\n                \"priority\": \"HIGH\",\n                \"dueDate\": null,\n                \"createdAt\": \"2026-06-16T15:42:30.196Z\",\n                \"updatedAt\": \"2026-06-16T15:42:30.196Z\",\n                \"userId\": 6,\n                \"categoryId\": 12,\n                \"milestoneId\": 7\n            }\n        ]\n    }\n}"
+            }
+          ]
         }
       ]
     }
