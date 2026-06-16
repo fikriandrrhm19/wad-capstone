@@ -16,6 +16,7 @@ const createMilestoneSchema = Joi.object({
     }),
     dueDate: Joi.date().iso().required().messages({
         'date.base': 'Format tanggal tenggat waktu milestone tidak valid.',
+        'date.format': 'Format tanggal tenggat waktu milestone harus ISO 8601 date format (YYYY-MM-DD).',
         'any.required': 'Tanggal tenggat waktu milestone wajib diisi.'
     }),
     status: Joi.string().valid(...VALID_MILESTONE_STATUS).default('pending').messages({
@@ -35,7 +36,8 @@ const updateMilestoneSchema = Joi.object({
         'string.max': 'Panjang deskripsi milestone tidak boleh melebihi 1000 karakter.'
     }),
     dueDate: Joi.date().iso().messages({
-        'date.base': 'Format tanggal tenggat waktu milestone tidak valid.'
+        'date.base': 'Format tanggal tenggat waktu milestone tidak valid.',
+        'date.format': 'Format tanggal tenggat waktu milestone harus ISO 8601 date format (YYYY-MM-DD).'
     }),
     status: Joi.string().valid(...VALID_MILESTONE_STATUS).messages({
         'any.only': 'Status milestone harus bernilai pending atau achieved.'
