@@ -1,6 +1,13 @@
 require('dotenv').config()
 const { PrismaClient } = require('@prisma/client');
+const argon2 = require('argon2');
 const prisma = new PrismaClient();
+
+const ARGON2_OPTIONS = {
+    memoryCost: 65536,
+    timeCost: 3,
+    parallelism: 4,
+};
 
 async function main() {
     console.log('Mulai seeding...');
@@ -18,15 +25,22 @@ async function main() {
     ]);
     console.log(` ✓ ${categories.length} kategori dibuat`);
     // ─── Buat Users ──────────────────────────────────────
+    const passwordBudi = await argon2.hash('password_budi_123', ARGON2_OPTIONS);
+    const passwordSiti = await argon2.hash('password_siti_123', ARGON2_OPTIONS);
+    
     const users = await Promise.all([
         prisma.user.create({
             data: {
-                name: 'Budi Santoso', email: 'budi@example.com', password: 'hashed_pw_1'
+                name: 'Budi Santoso', 
+                email: 'budi@example.com', 
+                password: passwordBudi
             }
         }),
         prisma.user.create({
             data: {
-                name: 'Siti Rahayu', email: 'siti@example.com', password: 'hashed_pw_2'
+                name: 'Siti Rahayu', 
+                email: 'siti@example.com', 
+                password: passwordSiti
             }
         }),
     ]);
