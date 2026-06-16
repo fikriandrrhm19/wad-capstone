@@ -9,7 +9,10 @@ const authenticate = (req, res, next) => {
         return res.status(401).json({
             error: {
                 code: 'MISSING_TOKEN',
-                message: 'Access token diperlukan. Sertakan header: Authorization: Bearer <token>',
+                message: 'Access token diperlukan.',
+                details: [
+                    { target: 'authorization', issue: 'Sertakan header format: Authorization: Bearer <token>' }
+                ]
             },
         });
     }
@@ -29,7 +32,10 @@ const authenticate = (req, res, next) => {
             return res.status(401).json({
                 error: {
                     code: 'TOKEN_EXPIRED',
-                    message: 'Access token sudah expired. Gunakan refresh token untuk memperbarui.',
+                    message: 'Access token sudah expired.',
+                    details: [
+                        { target: 'token', issue: 'Masa berlaku access token habis. Gunakan refresh token untuk memperbarui sesi.' }
+                    ]
                 },
             });
         }
@@ -37,6 +43,9 @@ const authenticate = (req, res, next) => {
             error: {
                 code: 'INVALID_TOKEN',
                 message: 'Access token tidak valid.',
+                details: [
+                    { target: 'token', issue: 'Tanda tangan (signature) token rusak atau tidak cocok dengan secret key server.' }
+                ]
             },
         });
     }
