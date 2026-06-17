@@ -12,14 +12,14 @@ const validate = (schema, source = 'body') => {
         });
         if (error) {
             const details = error.details.map(d => ({
-                field: d.path.join('.'),
-                message: d.message,
+                target: d.path.join('.'),
+                issue: d.message,
             }));
             return res.status(400).json({
                 error: {
                     code: 'VALIDATION_ERROR',
                     message: 'Data yang dikirim tidak valid.',
-                    details,
+                    details: details
                 },
             });
         }

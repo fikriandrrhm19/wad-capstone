@@ -1,8 +1,7 @@
 const prisma = require('../config/prisma');
 const taskRepository = {
     // ─── Ambil semua task dengan filter, sort, dan pagination ──
-    async findMany({ userId, status, priority, sort = 'createdAt', order =
-        'desc', limit = 10, offset = 0 } = {}) {
+    async findMany({ userId, status, priority, sort = 'createdAt', order = 'desc', limit = 10, offset = 0 } = {}) {
         const where = {};
         if (userId) where.userId = Number(userId);
         if (status) where.status = status.toUpperCase();
@@ -39,8 +38,7 @@ const taskRepository = {
                 title: data.title,
                 description: data.description,
                 status: data.status ? data.status.toUpperCase() : 'TODO',
-                priority: data.priority ? data.priority.toUpperCase() :
-                    'MEDIUM',
+                priority: data.priority ? data.priority.toUpperCase() : 'MEDIUM',
                 dueDate: data.dueDate ? new Date(data.dueDate) : null,
                 userId: Number(data.userId),
                 categoryId: data.categoryId ? Number(data.categoryId) : null,
@@ -54,17 +52,18 @@ const taskRepository = {
     // ─── Update sebagian (PATCH) ─────────────────────────────
     async update(id, data) {
         try {
+            const updatePayload = {};
+
+            if (data.title !== undefined) updatePayload.title = data.title;
+            if (data.description !== undefined) updatePayload.description = data.description;
+            if (data.status !== undefined) updatePayload.status = data.status.toUpperCase();
+            if (data.priority !== undefined) updatePayload.priority = data.priority.toUpperCase();
+            if (data.dueDate !== undefined) updatePayload.dueDate = data.dueDate ? new Date(data.dueDate) : null;
+            if (data.categoryId !== undefined) updatePayload.categoryId = data.categoryId ? Number(data.categoryId) : null;
+            
             return await prisma.task.update({
                 where: { id: Number(id) },
-                data: {
-                    ...data,
-                    status: data.status ? data.status.toUpperCase() :
-                        undefined,
-                    priority: data.priority ? data.priority.toUpperCase() :
-                        undefined,
-                    dueDate: data.dueDate ? new Date(data.dueDate) :
-                        undefined,
-                },
+                data: updatePayload,
                 include: {
                     user: { select: { id: true, name: true, email: true } },
                     category: { select: { id: true, name: true, color: true } },
@@ -94,10 +93,7 @@ const taskRepository = {
                 tasks: {
                     include: {
                         category: {
-                            select: {
-                                id: true, name: true, color:
-                                    true
-                            }
+                            select: { id: true, name: true, color: true }
                         }
                     },
                     orderBy: { createdAt: 'desc' },

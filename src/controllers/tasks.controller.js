@@ -28,8 +28,8 @@ const createTask = async (req, res, next) => {
     try {
         // Sementara hardcode userId=1 (autentikasi di Minggu 6)
         const task = await taskRepo.create({
-            ...req.body, userId:
-                req.body.userId || 1
+            ...req.body,
+            userId: req.user.userId
         });
         res.status(201).set('Location', `/api/v1/tasks/${task.id}`).json({
             data: task
@@ -43,7 +43,10 @@ const getTask = async (req, res, next) => {
         if (!task) return res.status(404).json({
             error: {
                 code: 'NOT_FOUND',
-                message: `Task ID ${req.params.id} tidak ditemukan.`
+                message: `Task ID ${req.params.id} tidak ditemukan.`,
+                details: [
+                    { target: 'id', issue: 'Resource data task dengan ID tersebut tidak eksis di database.' }
+                ]
             }
         });
         res.status(200).json({ data: task });
@@ -56,7 +59,10 @@ const updateTask = async (req, res, next) => {
         if (!task) return res.status(404).json({
             error: {
                 code: 'NOT_FOUND',
-                message: `Task ID ${req.params.id} tidak ditemukan.`
+                message: `Task ID ${req.params.id} tidak ditemukan.`,
+                details: [
+                    { target: 'id', issue: 'Gagal memperbarui, data tidak ditemukan.' }
+                ]
             }
         });
         res.status(200).json({ data: task });
@@ -69,7 +75,10 @@ const deleteTask = async (req, res, next) => {
         if (!ok) return res.status(404).json({
             error: {
                 code: 'NOT_FOUND',
-                message: `Task ID ${req.params.id} tidak ditemukan.`
+                message: `Task ID ${req.params.id} tidak ditemukan.`,
+                details: [
+                    { target: 'id', issue: 'Gagal menghapus, data tidak ditemukan.' }
+                ]
             }
         });
         res.status(204).send();
@@ -82,7 +91,10 @@ const getTasksByUser = async (req, res, next) => {
         if (!result) return res.status(404).json({
             error: {
                 code: 'NOT_FOUND',
-                message: `User ID ${req.params.userId} tidak ditemukan.`
+                message: `User ID ${req.params.userId} tidak ditemukan.`,
+                details: [
+                    { target: 'userId', issue: 'Data pengguna tidak terdaftar dalam sistem.' }
+                ]
             }
         });
         res.status(200).json({

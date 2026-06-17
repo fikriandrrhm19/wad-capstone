@@ -8,6 +8,8 @@ const {
     updateTaskSchema,
     listTasksSchema,
 } = require('../validators/task.validator');
+const authenticate = require('../middleware/authenticate');
+
 /**
  * @swagger
  * /tasks:
@@ -56,6 +58,7 @@ router.get('/', validate(listTasksSchema, 'query'), ctrl.listTasks);
  *       400:
  *         description: Data tidak valid
  */
+router.get('/', validate(listTasksSchema, 'query'), ctrl.listTasks);
 router.post('/', validate(createTaskSchema, 'body'), ctrl.createTask);
 router.get('/:id', ctrl.getTask);
 //router.put('/:id', validate(replaceTaskSchema, 'body'), ctrl.replaceTask);

@@ -1,0 +1,1158 @@
+{
+  "info": {
+    "_postman_id": "23aecd38-c93d-467b-8098-1bb00ccbe681",
+    "name": "WAD Capstone",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55241280",
+    "_collection_link": "https://go.postman.co/collection/55241280-23aecd38-c93d-467b-8098-1bb00ccbe681?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "UTS",
+      "item": [
+        {
+          "name": "Autentikasi",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"budi@example.com\", \"password\": \"password_budi_123\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Autentikasi",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"email\": \"budi@example.com\", \"password\": \"password_budi_123\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "571"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"23b-BJHxHZ2HMNS6SlgLl10Tdsyb8dc\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 16 Jun 2026 16:23:05 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Login berhasil.\",\n    \"data\": {\n        \"id\": 6,\n        \"name\": \"Budi Santoso\",\n        \"email\": \"budi@example.com\"\n    },\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNjk4NSwiZXhwIjoxNzgxNjI3ODg1LCJqdGkiOiJlNmMxNzVhMy1hMzAzLTQ5ZWUtYTM0NC0xOGQ4ZDFhYmMyMGUifQ.PnmRWhgSQ4LHdXOPmcY_glKrS8nIEGFCH3qWzNTJB_Y\",\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTc4MTYyNjk4NSwiZXhwIjoxNzgyMjMxNzg1LCJqdGkiOiJlOTM0NGUxZS04YmMyLTQ2MDItYjhjMi01ZWVjNTc2NmM1NjYifQ.0LXsH12f4imNuTGR_wv-Pmkm0Diss6CnD38sJNC0gb8\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Otorisasi",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/milestones",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "v1",
+                "milestones"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Otorisasi",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:3000/api/v1/milestones",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "milestones"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "174"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"ae-p8hdM9bQbcfcoIv0jqxfto0ChYg\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 16 Jun 2026 15:45:05 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"error\": {\n        \"code\": \"MISSING_TOKEN\",\n        \"message\": \"Access token diperlukan.\",\n        \"details\": [\n            {\n                \"target\": \"authorization\",\n                \"issue\": \"Sertakan header format: Authorization: Bearer <token>\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Read All & JOIN Query",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNDYxMywiZXhwIjoxNzgxNjI1NTEzLCJqdGkiOiI1ZDY0YjljNC1iYWJkLTQ4ZjQtOWE0My1kY2UzM2JkYTZhMGEifQ.kUam56fkgkUcer3Xw_a3Bt-xdRB2IUvf7FGAx3zVa5Q",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/milestones",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "v1",
+                "milestones"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Read All & JOIN Query",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNDYxMywiZXhwIjoxNzgxNjI1NTEzLCJqdGkiOiI1ZDY0YjljNC1iYWJkLTQ4ZjQtOWE0My1kY2UzM2JkYTZhMGEifQ.kUam56fkgkUcer3Xw_a3Bt-xdRB2IUvf7FGAx3zVa5Q",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:3000/api/v1/milestones",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "milestones"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1193"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"4a9-opa0t3JUSqv0gff6jDHrOQ0jXEg\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 16 Jun 2026 15:46:35 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": [\n        {\n            \"id\": 7,\n            \"title\": \"Kick-off Pengembangan Aplikasi Web\",\n            \"description\": \"Inisialisasi server dasar dan routing utility selesai dikonfigurasi.\",\n            \"dueDate\": \"2026-07-01T00:00:00.000Z\",\n            \"status\": \"ACHIEVED\",\n            \"createdAt\": \"2026-06-16T15:42:30.174Z\",\n            \"updatedAt\": \"2026-06-16T15:42:30.174Z\",\n            \"userId\": 6,\n            \"tasks\": [\n                {\n                    \"id\": 18,\n                    \"title\": \"Setup Express server\",\n                    \"status\": \"DONE\",\n                    \"priority\": \"HIGH\"\n                },\n                {\n                    \"id\": 20,\n                    \"title\": \"Belajar REST API\",\n                    \"status\": \"DONE\",\n                    \"priority\": \"HIGH\"\n                }\n            ]\n        },\n        {\n            \"id\": 6,\n            \"title\": \"Integrasi Database Relasional\",\n            \"description\": \"Seluruh skema Prisma terbentuk dan sukses dimigrasikan ke PostgreSQL.\",\n            \"dueDate\": \"2026-07-15T00:00:00.000Z\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-06-16T15:42:30.174Z\",\n            \"updatedAt\": \"2026-06-16T15:42:30.174Z\",\n            \"userId\": 6,\n            \"tasks\": [\n                {\n                    \"id\": 21,\n                    \"title\": \"Belajar Prisma ORM\",\n                    \"status\": \"TODO\",\n                    \"priority\": \"MEDIUM\"\n                },\n                {\n                    \"id\": 22,\n                    \"title\": \"Setup PostgreSQL\",\n                    \"status\": \"IN_PROGRESS\",\n                    \"priority\": \"HIGH\"\n                }\n            ]\n        },\n        {\n            \"id\": 9,\n            \"title\": \"Sistem Autentikasi dan Keamanan Sesi\",\n            \"description\": \"Implementasi JWT tokens beserta refresh token rotation berjalan kokoh.\",\n            \"dueDate\": \"2026-08-01T00:00:00.000Z\",\n            \"status\": \"PENDING\",\n            \"createdAt\": \"2026-06-16T15:42:30.175Z\",\n            \"updatedAt\": \"2026-06-16T15:42:30.175Z\",\n            \"userId\": 6,\n            \"tasks\": []\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Validasi Input",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNDYxMywiZXhwIjoxNzgxNjI1NTEzLCJqdGkiOiI1ZDY0YjljNC1iYWJkLTQ4ZjQtOWE0My1kY2UzM2JkYTZhMGEifQ.kUam56fkgkUcer3Xw_a3Bt-xdRB2IUvf7FGAx3zVa5Q",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"description\": \"Mencoba tanpa judul\", \"dueDate\": \"2026-07-20\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/milestones",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "v1",
+                "milestones"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Validasi Input",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNDYxMywiZXhwIjoxNzgxNjI1NTEzLCJqdGkiOiI1ZDY0YjljNC1iYWJkLTQ4ZjQtOWE0My1kY2UzM2JkYTZhMGEifQ.kUam56fkgkUcer3Xw_a3Bt-xdRB2IUvf7FGAx3zVa5Q",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"description\": \"Mencoba tanpa judul\", \"dueDate\": \"2026-07-20\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/v1/milestones",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "milestones"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "151"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"97-LMzMpvgUOaRc4yY8bXLvYGrndMs\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 16 Jun 2026 15:48:24 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"error\": {\n        \"code\": \"VALIDATION_ERROR\",\n        \"message\": \"Data yang dikirim tidak valid.\",\n        \"details\": [\n            {\n                \"field\": \"title\",\n                \"message\": \"Judul milestone wajib diisi.\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Validasi Input Tanggal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNTYyMywiZXhwIjoxNzgxNjI2NTIzLCJqdGkiOiIyMWQwODhlNS05NjRmLTRmMWQtYTE2Ny04YTJhMDU1MzA1MjQifQ.csb1j4hqeLy4-F74bPZKwWecugieSUveDfPLGOO8PiA",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\": \"Gagal Format Tanggal\", \"dueDate\": \"tanggal-ngawur\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/milestones",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "v1",
+                "milestones"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Validasi Input Tanggal",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNTYyMywiZXhwIjoxNzgxNjI2NTIzLCJqdGkiOiIyMWQwODhlNS05NjRmLTRmMWQtYTE2Ny04YTJhMDU1MzA1MjQifQ.csb1j4hqeLy4-F74bPZKwWecugieSUveDfPLGOO8PiA",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"title\": \"Gagal Format Tanggal\", \"dueDate\": \"tanggal-ngawur\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/v1/milestones",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "milestones"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "203"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"cb-w4CJ08hvOricOEDOMWajFReJUU8\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 16 Jun 2026 16:04:35 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"error\": {\n        \"code\": \"VALIDATION_ERROR\",\n        \"message\": \"Data yang dikirim tidak valid.\",\n        \"details\": [\n            {\n                \"target\": \"dueDate\",\n                \"issue\": \"Format tanggal tenggat waktu milestone harus ISO 8601 date format (YYYY-MM-DD).\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNjAyOSwiZXhwIjoxNzgxNjI2OTI5LCJqdGkiOiIyYzZjNmUzNi1iYjQ0LTQwODItYTQ0My1kMGNlZTE0ZTk2ZmEifQ.ov0jU-_VjXcNKTnTjgzXu3qIfTE2DmcXZuTBfSYQRoo",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\": \"Pengujian Sistem Akhir UTS\", \"description\": \"Menambahkan milestone baru via Postman\", \"dueDate\": \"2026-06-25\", \"status\": \"pending\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/milestones",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "v1",
+                "milestones"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Create Data",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNjAyOSwiZXhwIjoxNzgxNjI2OTI5LCJqdGkiOiIyYzZjNmUzNi1iYjQ0LTQwODItYTQ0My1kMGNlZTE0ZTk2ZmEifQ.ov0jU-_VjXcNKTnTjgzXu3qIfTE2DmcXZuTBfSYQRoo",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"title\": \"Pengujian Sistem Akhir UTS\", \"description\": \"Menambahkan milestone baru via Postman\", \"dueDate\": \"2026-06-25\", \"status\": \"pending\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/v1/milestones",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "milestones"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "305"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"131-G3qE3Qf7amEjfcE/YS1zaE+ulQ8\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 16 Jun 2026 16:09:02 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Milestone berhasil dibuat.\",\n    \"data\": {\n        \"id\": 11,\n        \"title\": \"Pengujian Sistem Akhir UTS\",\n        \"description\": \"Menambahkan milestone baru via Postman\",\n        \"dueDate\": \"2026-06-25T00:00:00.000Z\",\n        \"status\": \"PENDING\",\n        \"createdAt\": \"2026-06-16T16:09:02.420Z\",\n        \"updatedAt\": \"2026-06-16T16:09:02.420Z\",\n        \"userId\": 6,\n        \"tasks\": []\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Isolasi Data Pengguna",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNjAyOSwiZXhwIjoxNzgxNjI2OTI5LCJqdGkiOiIyYzZjNmUzNi1iYjQ0LTQwODItYTQ0My1kMGNlZTE0ZTk2ZmEifQ.ov0jU-_VjXcNKTnTjgzXu3qIfTE2DmcXZuTBfSYQRoo",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/milestones/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "v1",
+                "milestones",
+                "4"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Isolasi Data Pengguna",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNjAyOSwiZXhwIjoxNzgxNjI2OTI5LCJqdGkiOiIyYzZjNmUzNi1iYjQ0LTQwODItYTQ0My1kMGNlZTE0ZTk2ZmEifQ.ov0jU-_VjXcNKTnTjgzXu3qIfTE2DmcXZuTBfSYQRoo",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:3000/api/v1/milestones/4",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "milestones",
+                    "4"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "203"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"cb-kRr6RHCgZhgephh2/r4Sy8N80FE\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 16 Jun 2026 16:10:16 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"error\": {\n        \"code\": \"NOT_FOUND\",\n        \"message\": \"Milestone ID 4 tidak ditemukan.\",\n        \"details\": [\n            {\n                \"target\": \"id\",\n                \"issue\": \"Resource data milestone dengan ID tersebut tidak eksis atau Anda tidak memiliki hak akses.\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Parsial / PATCH",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNjAyOSwiZXhwIjoxNzgxNjI2OTI5LCJqdGkiOiIyYzZjNmUzNi1iYjQ0LTQwODItYTQ0My1kMGNlZTE0ZTk2ZmEifQ.ov0jU-_VjXcNKTnTjgzXu3qIfTE2DmcXZuTBfSYQRoo",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"status\": \"achieved\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/milestones/11",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "v1",
+                "milestones",
+                "11"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Update Parsial / PATCH",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNjAyOSwiZXhwIjoxNzgxNjI2OTI5LCJqdGkiOiIyYzZjNmUzNi1iYjQ0LTQwODItYTQ0My1kMGNlZTE0ZTk2ZmEifQ.ov0jU-_VjXcNKTnTjgzXu3qIfTE2DmcXZuTBfSYQRoo",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"status\": \"achieved\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/v1/milestones/11",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "milestones",
+                    "11"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "310"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"136-FkSb89lVaqjOo07vglsssewSXy8\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 16 Jun 2026 16:13:30 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Milestone berhasil diperbarui.\",\n    \"data\": {\n        \"id\": 11,\n        \"title\": \"Pengujian Sistem Akhir UTS\",\n        \"description\": \"Menambahkan milestone baru via Postman\",\n        \"dueDate\": \"2026-06-25T00:00:00.000Z\",\n        \"status\": \"ACHIEVED\",\n        \"createdAt\": \"2026-06-16T16:09:02.420Z\",\n        \"updatedAt\": \"2026-06-16T16:13:30.446Z\",\n        \"userId\": 6,\n        \"tasks\": []\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Validasi Update Kosong",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNjAyOSwiZXhwIjoxNzgxNjI2OTI5LCJqdGkiOiIyYzZjNmUzNi1iYjQ0LTQwODItYTQ0My1kMGNlZTE0ZTk2ZmEifQ.ov0jU-_VjXcNKTnTjgzXu3qIfTE2DmcXZuTBfSYQRoo",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/v1/milestones/11",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "v1",
+                "milestones",
+                "11"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Validasi Update Kosong",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNjAyOSwiZXhwIjoxNzgxNjI2OTI5LCJqdGkiOiIyYzZjNmUzNi1iYjQ0LTQwODItYTQ0My1kMGNlZTE0ZTk2ZmEifQ.ov0jU-_VjXcNKTnTjgzXu3qIfTE2DmcXZuTBfSYQRoo",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3000/api/v1/milestones/11",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "milestones",
+                    "11"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "181"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"b5-qwUItwX+33TkeyEa11IuLEJ5a2k\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 16 Jun 2026 16:18:57 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"error\": {\n        \"code\": \"VALIDATION_ERROR\",\n        \"message\": \"Data yang dikirim tidak valid.\",\n        \"details\": [\n            {\n                \"target\": \"\",\n                \"issue\": \"Minimal satu field harus diisi untuk memperbarui data milestone.\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Data",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNjk4NSwiZXhwIjoxNzgxNjI3ODg1LCJqdGkiOiJlNmMxNzVhMy1hMzAzLTQ5ZWUtYTM0NC0xOGQ4ZDFhYmMyMGUifQ.PnmRWhgSQ4LHdXOPmcY_glKrS8nIEGFCH3qWzNTJB_Y",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/milestones/11",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "v1",
+                "milestones",
+                "11"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Delete Data",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNjk4NSwiZXhwIjoxNzgxNjI3ODg1LCJqdGkiOiJlNmMxNzVhMy1hMzAzLTQ5ZWUtYTM0NC0xOGQ4ZDFhYmMyMGUifQ.PnmRWhgSQ4LHdXOPmcY_glKrS8nIEGFCH3qWzNTJB_Y",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:3000/api/v1/milestones/11",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "milestones",
+                    "11"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "41"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"29-2IOg6W9oybolSphUYyfGxhKUh4I\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 16 Jun 2026 16:25:19 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"Milestone berhasil dihapus.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Verifikasi Integrity SetNull",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNjk4NSwiZXhwIjoxNzgxNjI3ODg1LCJqdGkiOiJlNmMxNzVhMy1hMzAzLTQ5ZWUtYTM0NC0xOGQ4ZDFhYmMyMGUifQ.PnmRWhgSQ4LHdXOPmcY_glKrS8nIEGFCH3qWzNTJB_Y",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/v1/tasks/18",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                "18"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Verifikasi Integrity SetNull",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYyNjk4NSwiZXhwIjoxNzgxNjI3ODg1LCJqdGkiOiJlNmMxNzVhMy1hMzAzLTQ5ZWUtYTM0NC0xOGQ4ZDFhYmMyMGUifQ.PnmRWhgSQ4LHdXOPmcY_glKrS8nIEGFCH3qWzNTJB_Y",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:3000/api/v1/tasks/18",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "tasks",
+                    "18"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "358"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"166-1+HhiKWaR2FRE3SOe2VyhBq5xhw\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 16 Jun 2026 16:28:14 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"id\": 18,\n        \"title\": \"Setup Express server\",\n        \"description\": null,\n        \"status\": \"DONE\",\n        \"priority\": \"HIGH\",\n        \"dueDate\": null,\n        \"createdAt\": \"2026-06-16T15:42:30.196Z\",\n        \"updatedAt\": \"2026-06-16T15:42:30.196Z\",\n        \"userId\": 6,\n        \"categoryId\": 11,\n        \"milestoneId\": 7,\n        \"user\": {\n            \"id\": 6,\n            \"name\": \"Budi Santoso\",\n            \"email\": \"budi@example.com\"\n        },\n        \"category\": {\n            \"id\": 11,\n            \"name\": \"Proyek\",\n            \"color\": \"#10B981\"\n        }\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Verify Relation via Milestone Detail",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": [
+            {
+              "name": "Verify Relation via Milestone Detail",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImVtYWlsIjoiYnVkaUBleGFtcGxlLmNvbSIsImlhdCI6MTc4MTYzMzU3MCwiZXhwIjoxNzgxNjM0NDcwLCJqdGkiOiI3YjUwZmU1NC1jOTBhLTRlOWItOGQwOS0zZWFjMThhOTg5NjAifQ.81rlX8oKjYzkfL7iSFlxxGSYyzOf6ToCss3SreWbssg",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:3000/api/v1/milestones/7",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "v1",
+                    "milestones",
+                    "7"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "759"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"2f7-P5ZW8XUfYOvvOdrBbw2VIdhy2vo\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 16 Jun 2026 18:13:02 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"data\": {\n        \"id\": 7,\n        \"title\": \"Kick-off Pengembangan Aplikasi Web\",\n        \"description\": \"Inisialisasi server dasar dan routing utility selesai dikonfigurasi.\",\n        \"dueDate\": \"2026-07-01T00:00:00.000Z\",\n        \"status\": \"ACHIEVED\",\n        \"createdAt\": \"2026-06-16T15:42:30.174Z\",\n        \"updatedAt\": \"2026-06-16T15:42:30.174Z\",\n        \"userId\": 6,\n        \"tasks\": [\n            {\n                \"id\": 18,\n                \"title\": \"Setup Express server\",\n                \"description\": null,\n                \"status\": \"DONE\",\n                \"priority\": \"HIGH\",\n                \"dueDate\": null,\n                \"createdAt\": \"2026-06-16T15:42:30.196Z\",\n                \"updatedAt\": \"2026-06-16T15:42:30.196Z\",\n                \"userId\": 6,\n                \"categoryId\": 11,\n                \"milestoneId\": 7\n            },\n            {\n                \"id\": 20,\n                \"title\": \"Belajar REST API\",\n                \"description\": null,\n                \"status\": \"DONE\",\n                \"priority\": \"HIGH\",\n                \"dueDate\": null,\n                \"createdAt\": \"2026-06-16T15:42:30.196Z\",\n                \"updatedAt\": \"2026-06-16T15:42:30.196Z\",\n                \"userId\": 6,\n                \"categoryId\": 12,\n                \"milestoneId\": 7\n            }\n        ]\n    }\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
