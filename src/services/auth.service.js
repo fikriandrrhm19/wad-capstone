@@ -82,6 +82,7 @@ const authService = {
         const accessToken = signAccessToken({
             userId: user.id,
             email: user.email,
+            role: user.role,
         });
         // 5. Buat refresh token (long-lived: 7 hari)
         const refreshToken = signRefreshToken({ userId: user.id });
@@ -92,7 +93,7 @@ const authService = {
             expiresAt: getRefreshTokenExpiry(),
         });
         return {
-            user: { id: user.id, name: user.name, email: user.email },
+            user: { id: user.id, name: user.name, email: user.email, role: user.role },
             accessToken,
             refreshToken,
         };
@@ -136,7 +137,8 @@ const authService = {
         // 6. Buat token baru
         const newAccessToken = signAccessToken({
             userId: storedToken.userId,
-            email: storedToken.user.email
+            email: storedToken.user.email,
+            role: storedToken.user.role
         });
         const newRefreshToken = signRefreshToken({
             userId: storedToken.userId
