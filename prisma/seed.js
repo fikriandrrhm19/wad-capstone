@@ -27,24 +27,35 @@ async function main() {
     // ─── Buat Users ──────────────────────────────────────
     const passwordBudi = await argon2.hash('password_budi_123', ARGON2_OPTIONS);
     const passwordSiti = await argon2.hash('password_siti_123', ARGON2_OPTIONS);
+    const passwordAdmin = await argon2.hash('password_admin_123', ARGON2_OPTIONS);
     
     const users = await Promise.all([
         prisma.user.create({
             data: {
                 name: 'Budi Santoso', 
                 email: 'budi@example.com', 
-                password: passwordBudi
+                password: passwordBudi,
+                role: 'USER'
             }
         }),
         prisma.user.create({
             data: {
                 name: 'Siti Rahayu', 
                 email: 'siti@example.com', 
-                password: passwordSiti
+                password: passwordSiti,
+                role: 'USER'
+            }
+        }),
+        prisma.user.create({
+            data: {
+                name: 'Admin WAD', 
+                email: 'admin@example.com', 
+                password: passwordAdmin,
+                role: 'ADMIN'
             }
         }),
     ]);
-    console.log(` ✓ ${users.length} user dibuat`);
+    console.log(` ✓ ${users.length} user dibuat (termasuk Admin)`);
     // ─── Buat Milestones ──────────────────────────────────────
     const milestones = await Promise.all([
       prisma.milestone.create({
