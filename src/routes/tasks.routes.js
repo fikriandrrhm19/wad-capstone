@@ -5,6 +5,7 @@ const validate = require('../middleware/validate');
 const authenticate = require('../middleware/authenticate');
 const authorize = require('../middleware/authorize');
 const { checkTaskOwnership } = require('../middleware/checkOwnership');
+const { sanitizeBody } = require('../middleware/sanitize');
 const {
     createTaskSchema,
     replaceTaskSchema,
@@ -68,8 +69,8 @@ router.post('/', validate(createTaskSchema, 'body'), authorize('USER', 'ADMIN'),
 // GET /api/v1/tasks/:id — User bisa lihat task sendiri, admin lihat semua
 router.get('/:id', checkTaskOwnership, ctrl.getTask);
 
-// PATCH /api/v1/tasks/:id — Hanya pemilik atau admin yang bisa mengubah data
-router.patch('/:id', checkTaskOwnership, validate(updateTaskSchema, 'body'), ctrl.updateTask);
+// PATCH /api/v1/tasks/:id — Hanya pemilik atau admin yang bisa mengubah data (Ditambahkan sanitizeBody setelah validasi)
+router.patch('/:id', checkTaskOwnership, validate(updateTaskSchema, 'body'), sanitizeBody, ctrl.updateTask);
 
 // DELETE /api/v1/tasks/:id — Hanya pemilik atau admin yang bisa menghapus data
 router.delete('/:id', checkTaskOwnership, ctrl.deleteTask);
