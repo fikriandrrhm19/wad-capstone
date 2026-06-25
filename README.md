@@ -23,6 +23,8 @@ Proyek ini mengimplementasikan fitur-fitur yang dibangun selama praktikum dan me
 
 * **Authentication & Session Management (Week 6)**: Menggunakan **Argon2id** untuk hashing password dan **JSON Web Token (JWT)** untuk autentikasi. Mendukung *access token*, *refresh token*, *token rotation*, dan *reuse detection* sesuai kebutuhan praktikum.
 
+* **Security Hardening & Role-Based Authorization (Week 7)**: Mengamankan ekosistem API dengan **Helmet**, **CORS**, anti-XSS *input sanitization*, multi-tiered **Rate Limiting**, serta **RBAC** (*Role-Based Access Control*) dan *Resource Ownership Check*.
+
 * **Milestone Module (UTS)**: Menambahkan entitas `Milestone` sebagai target pencapaian dalam proyek. Setiap milestone dapat memiliki beberapa task yang terhubung melalui relasi database.
 
 ## Backend Architecture
@@ -40,6 +42,9 @@ Aplikasi ini menggunakan *layered architecture* guna memisahkan responsibility s
 | Authentication    | Argon2id, JWT      | Hashing password dan autentikasi     |
 | Validation        | Joi                | Validasi request                     |
 | API Documentation | Swagger UI Express | Dokumentasi API yang interaktif      |
+| Security Hardening| Helmet, CORS       | Mengamankan HTTP headers & Cross-Origin requests |
+| Rate Limiter      | express-rate-limit | Mencegah serangan Brute-Force & DoS              |
+| Sanitization      | xss                | Membersihkan request body dari injeksi script XSS |
 
 ### Project Structure
 
@@ -50,8 +55,9 @@ wad-capstone
 │  ├─ prisma/                                   # Screenshot data Prisma Studio
 │  └─ swagger/                                  # Screenshot Swagger UI
 ├─ postman_collections/
-│  ├─ WAD-Capstone-Lab.postman_collection.json  # Collection praktikum Week 1-7
-│  └─ WAD-Capstone-UTS.postman_collection.json  # Collection pengujian Milestone
+│  ├─ WAD-Capstone-Lab1-6.postman_collection.json  # Collection praktikum Week 1-6
+│  ├─ WAD-Capstone-Lab7.postman_collection.json    # Collection praktikum Week 7
+│  └─ WAD-Capstone-UTS.postman_collection.json     # Collection pengujian Milestone
 ├─ prisma/
 │  ├─ migrations/                               # Riwayat migrasi database
 │  ├─ schema.prisma                             # Definisi model dan relasi database
@@ -158,11 +164,6 @@ http://localhost:3000/api/docs
 </p>
 
 ## Testing
-
-Repository ini menyediakan dua Postman Collection:
-
-- **WAD-Capstone-Lab.postman_collection.json** untuk pengujian fitur praktikum Week 1-7.
-- **WAD-Capstone-UTS.postman_collection.json** untuk pengujian fitur Milestone yang ditambahkan pada UTS.
 
 Tabel berikut merangkum skenario pengujian yang ada pada collection **WAD-Capstone-UTS.postman_collection.json**.
 

@@ -1,4 +1,14 @@
 const prisma = require('../config/prisma');
+
+const parseSafeDate = (value) => {
+    if (value === undefined) return undefined;
+    if (value === null || String(value).trim() === "" || String(value).includes("Invalid Date")) {
+        return null;
+    }
+    const timestamp = Date.parse(value);
+    return isNaN(timestamp) ? null : new Date(timestamp);
+};
+
 const taskRepository = {
     // ─── Ambil semua task dengan filter, sort, dan pagination ──
     async findMany({ userId, status, priority, sort = 'createdAt', order = 'desc', limit = 10, offset = 0 } = {}) {
@@ -21,6 +31,7 @@ const taskRepository = {
         ]);
         return { data, total };
     },
+
     // ─── Cari task by ID ────────────────────────────────────
     async findById(id) {
         return prisma.task.findUnique({
@@ -31,6 +42,7 @@ const taskRepository = {
             },
         });
     },
+
     // ─── Buat task baru ─────────────────────────────────────
     async create(data) {
         return prisma.task.create({
@@ -39,7 +51,7 @@ const taskRepository = {
                 description: data.description,
                 status: data.status ? data.status.toUpperCase() : 'TODO',
                 priority: data.priority ? data.priority.toUpperCase() : 'MEDIUM',
-                dueDate: data.dueDate ? new Date(data.dueDate) : null,
+                dueDate: parseSafeDate(data.dueDate),
                 userId: Number(data.userId),
                 categoryId: data.categoryId ? Number(data.categoryId) : null,
             },
@@ -49,6 +61,7 @@ const taskRepository = {
             },
         });
     },
+
     // ─── Update sebagian (PATCH) ─────────────────────────────
     async update(id, data) {
         try {
@@ -58,7 +71,11 @@ const taskRepository = {
             if (data.description !== undefined) updatePayload.description = data.description;
             if (data.status !== undefined) updatePayload.status = data.status.toUpperCase();
             if (data.priority !== undefined) updatePayload.priority = data.priority.toUpperCase();
-            if (data.dueDate !== undefined) updatePayload.dueDate = data.dueDate ? new Date(data.dueDate) : null;
+            
+            if (data.dueDate !== undefined) {
+                updatePayload.dueDate = parseSafeDate(data.dueDate);
+            }
+            
             if (data.categoryId !== undefined) updatePayload.categoryId = data.categoryId ? Number(data.categoryId) : null;
             
             return await prisma.task.update({
@@ -75,6 +92,7 @@ const taskRepository = {
             throw e;
         }
     },
+
     // ─── Hapus task ──────────────────────────────────────────
     async remove(id) {
         try {
@@ -85,6 +103,7 @@ const taskRepository = {
             throw e;
         }
     },
+
     // ─── Ambil semua task milik user tertentu (JOIN) ─────────
     async findByUser(userId) {
         return prisma.user.findUnique({
@@ -102,4 +121,5 @@ const taskRepository = {
         });
     },
 };
+
 module.exports = taskRepository;

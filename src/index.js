@@ -1,46 +1,73 @@
 const config = require('./config');
 const express = require('express');
-const routes = require('./routes');
-const tasksRoutes = require('./routes/tasks.routes');
-const setupSwagger = require('./docs/swagger');
-const app = express();
-const usersRoutes = require('./routes/users.routes');
-const authRoutes = require('./routes/auth.routes');
-const milestonesRoutes = require('./routes/milestones.routes');
-const authenticate = require('./middleware/authenticate');
+const http = require('http');
+const { Server } = require('socket.io');
+const helmet = require('helmet');
+const cors = require('cors');
+const corsOptions = require('./config/cors');
+const { apiLimiter, authLimiter, sensitiveLimiter } = require('./config/rateLimiter');
 
-// ─── Middleware Global ───────────────────────────────────────
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-// Logging middleware
+const routes = require('./routes');
+const authRoutes = require('./routes/auth.routes');
+const tasksRoutes = require('./routes/tasks.routes');
+const usersRoutes = require('./routes/users.routes');
+const adminRoutes = require('./routes/admin.routes');
+const milestonesRoutes = require('./routes/milestones.routes');
+//const authenticate = require('./middleware/authenticate');
+const setupSwagger = require('./docs/swagger');
+
+const app = express();
+const server = http.createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: config.allowedOrigins || '*',
+        methods: ["GET", "POST"],
+        credentials: true,
+    },
+    pingTimeout: 60000,
+    pingInterval: 25000,
+});
+
+app.set("io", io);
+
+app.use(helmet());
+
+app.use(cors(corsOptions));
+//app.options('*', cors());
+
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+
+app.use('/api/', apiLimiter);
+
 app.use((req, res, next) => {
     const start = Date.now();
     res.on('finish', () => {
         const duration = Date.now() - start;
-        console.log(`${req.method} ${req.path} → ${res.statusCode}
-(${duration}ms)`);
+        console.log(`${req.method} ${req.path} → ${res.statusCode} (${duration}ms)`);
     });
     next();
 });
 
-// ─── Routes ─────────────────────────────────────────────────
 //app.use('/health', routes); // /health
 app.use('/', routes); // /api/info, /api/echo/:msg
+app.use('/api', routes);
 
-// ─── Auth routes (tidak dilindungi) ────────────────────
+app.use('/auth/login', authLimiter);
+app.use('/auth/refresh', sensitiveLimiter);
 app.use('/auth', authRoutes);
 
-// ─── API Routes yang dilindungi ─────────────────────────
-// authenticate dijalankan sebelum semua route /api/v1/...
-app.use('/api/v1', authenticate);
+//app.use('/api/v1', authenticate);
 app.use('/api/v1/tasks', tasksRoutes);
 app.use('/api/v1/users', usersRoutes);
+app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/milestones', milestonesRoutes);
 
-// ─── Swagger UI ─────────────────────────────────────────────
 setupSwagger(app);
 
-// ─── 404 & Error Handlers ───────────────────────────────────
+require("./socket")(io);
+
 app.use((req, res) => {
     res.status(404).json({
         error: {
@@ -58,19 +85,26 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-    // Error dengan statusCode dari authService
+    if (err.message && err.message.includes('tidak diizinkan oleh CORS')) {
+        return res.status(403).json({
+            error: { 
+                code: 'CORS_ERROR', 
+                message: err.message,
+                details: [{ target: 'cors', issue: 'Akses diblokir oleh kebijakan keamanan Cross-Origin Resource Sharing.' }]
+            }
+        });
+    }
+
     if (err.statusCode) {
         return res.status(err.statusCode).json({
             error: { 
-                code: err.code || 'AUTH_ERROR',
+                code: err.code || 'AUTH_ERROR', 
                 message: err.message,
-                details: err.details || [
-                    { target: 'authentication', issue: 'Sesi token tidak valid atau telah kedaluwarsa.' }
-                ]
-            },
+                details: err.details || [{ target: 'authentication', issue: 'Sesi token tidak valid atau telah kedaluwarsa.' }]
+            }
         });
     }
-    // Prisma P2002: email duplikat (sudah ada user dengan email tersebut)
+
     if (err.code === 'P2002') {
         const conflictField = err.meta?.target ? err.meta.target.join(', ') : 'field';
         return res.status(409).json({
@@ -86,6 +120,7 @@ app.use((err, req, res, next) => {
             }
         });
     }
+
     console.error('Unhandled error:', err.message);
     res.status(500).json({
         error: {
@@ -102,12 +137,15 @@ app.use((err, req, res, next) => {
 });
 
 // ─── Start Server ────────────────────────────────────────────
-app.listen(config.port, () => {
-    console.log('─'.repeat(50));
+server.listen(config.port, () => {
+    console.log('─'.repeat(55));
     console.log(` ${config.appName} v${config.version}`);
     console.log(` Environment : ${config.env}`);
-    console.log(` Server : http://localhost:${config.port}`);
-    console.log(` Docs : http://localhost:${config.port}/api/docs`);
-    console.log('─'.repeat(50));
+    console.log(` Server      : http://localhost:${config.port}`);
+    console.log(` Docs        : http://localhost:${config.port}/api/docs`);
+    console.log(` Security    : Helmet ✓ CORS ✓ Rate Limit ✓`);
+    console.log(` Socket.IO   : Ready & Listening ✓`);
+    console.log('─'.repeat(55));
 });
+
 module.exports = app;

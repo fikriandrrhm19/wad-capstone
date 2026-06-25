@@ -2,13 +2,18 @@ const express = require('express');
 const router = express.Router();
 const ctrl = require('../controllers/tasks.controller');
 const validate = require('../middleware/validate');
+const authenticate = require('../middleware/authenticate');
+const authorize = require('../middleware/authorize');
+const { checkTaskOwnership } = require('../middleware/checkOwnership');
+const { sanitizeBody } = require('../middleware/sanitize');
 const {
     createTaskSchema,
     replaceTaskSchema,
     updateTaskSchema,
     listTasksSchema,
 } = require('../validators/task.validator');
-const authenticate = require('../middleware/authenticate');
+
+router.use(authenticate);
 
 /**
  * @swagger
@@ -58,10 +63,16 @@ router.get('/', validate(listTasksSchema, 'query'), ctrl.listTasks);
  *       400:
  *         description: Data tidak valid
  */
-router.get('/', validate(listTasksSchema, 'query'), ctrl.listTasks);
-router.post('/', validate(createTaskSchema, 'body'), ctrl.createTask);
-router.get('/:id', ctrl.getTask);
-//router.put('/:id', validate(replaceTaskSchema, 'body'), ctrl.replaceTask);
-router.patch('/:id', validate(updateTaskSchema, 'body'), ctrl.updateTask);
-router.delete('/:id', ctrl.deleteTask);
+// POST /api/v1/tasks — USER dan ADMIN bisa buat task
+router.post('/', validate(createTaskSchema, 'body'), authorize('USER', 'ADMIN'), ctrl.createTask);
+
+// GET /api/v1/tasks/:id — User bisa lihat task sendiri, admin lihat semua
+router.get('/:id', checkTaskOwnership, ctrl.getTask);
+
+// PATCH /api/v1/tasks/:id — Hanya pemilik atau admin yang bisa mengubah data (Ditambahkan sanitizeBody setelah validasi)
+router.patch('/:id', checkTaskOwnership, validate(updateTaskSchema, 'body'), sanitizeBody, ctrl.updateTask);
+
+// DELETE /api/v1/tasks/:id — Hanya pemilik atau admin yang bisa menghapus data
+router.delete('/:id', checkTaskOwnership, ctrl.deleteTask);
+
 module.exports = router;
