@@ -1,5 +1,7 @@
 const config = require('./config');
 const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
 const helmet = require('helmet');
 const cors = require('cors');
 const corsOptions = require('./config/cors');
@@ -15,6 +17,19 @@ const milestonesRoutes = require('./routes/milestones.routes');
 const setupSwagger = require('./docs/swagger');
 
 const app = express();
+const server = http.createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: config.allowedOrigins || '*',
+        methods: ["GET", "POST"],
+        credentials: true,
+    },
+    pingTimeout: 60000,
+    pingInterval: 25000,
+});
+
+app.set("io", io);
 
 app.use(helmet());
 
@@ -50,6 +65,8 @@ app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/milestones', milestonesRoutes);
 
 setupSwagger(app);
+
+require("./socket")(io);
 
 app.use((req, res) => {
     res.status(404).json({
@@ -120,13 +137,14 @@ app.use((err, req, res, next) => {
 });
 
 // ─── Start Server ────────────────────────────────────────────
-app.listen(config.port, () => {
+server.listen(config.port, () => {
     console.log('─'.repeat(55));
     console.log(` ${config.appName} v${config.version}`);
     console.log(` Environment : ${config.env}`);
     console.log(` Server      : http://localhost:${config.port}`);
     console.log(` Docs        : http://localhost:${config.port}/api/docs`);
     console.log(` Security    : Helmet ✓ CORS ✓ Rate Limit ✓`);
+    console.log(` Socket.IO   : Ready & Listening ✓`);
     console.log('─'.repeat(55));
 });
 
