@@ -10,7 +10,8 @@ module.exports = function setupSocket(io) {
                 return next(new Error("Token tidak disertakan"));
             }
 
-            const secretKey = config.jwtAccessSecret || config.jwtSecret;
+            //const secretKey = config.jwtAccessSecret || config.jwtSecret;
+            const secretKey = config.jwt?.accessSecret || config.jwtAccessSecret || config.jwtSecret;
             const payload = jwt.verify(token, secretKey);
 
             socket.data.user = {
@@ -21,6 +22,7 @@ module.exports = function setupSocket(io) {
 
             next();
         } catch (err) {
+            console.error("[Socket Auth Error]:", err.message);
             next(new Error("Token tidak valid: " + err.message));
         }
     });
