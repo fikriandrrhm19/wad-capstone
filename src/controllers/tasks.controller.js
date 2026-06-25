@@ -34,11 +34,22 @@ const listTasks = async (req, res, next) => {
 // ─── POST /api/v1/tasks ─────────────────────────────────────
 const createTask = async (req, res, next) => {
     try {
-        // Sementara hardcode userId=1 (autentikasi di Minggu 6)
+        const userId = req.user.userId;
         const task = await taskRepo.create({
             ...req.body,
-            userId: req.user.userId
+            userId: userId
         });
+        const io = req.app.get("io");
+        if (io) {
+            io.to("tasks:global").emit("task:created", { task });
+            
+            io.to(`user:${userId}`).emit("notification", {
+                type: "SUCCESS",
+                title: "Task Berhasil Dibuat",
+                message: `Task "${task.title}" telah ditambahkan.`,
+            });
+        }
+
         res.status(201).set('Location', `/api/v1/tasks/${task.id}`).json({
             data: task
         });
@@ -79,13 +90,19 @@ const updateTask = async (req, res, next) => {
                 }
             });
         }
+        const io = req.app.get("io");
+        if (io) {
+            io.to("tasks:global").emit("task:updated", { task });
+        }
+
         res.status(200).json({ data: task });
     } catch (err) { next(err); }
 };
 // ─── DELETE /api/v1/tasks/:id ───────────────────────────────
 const deleteTask = async (req, res, next) => {
     try {
-        const ok = await taskRepo.remove(req.params.id);
+        const idParam = req.params.id;
+        const ok = await taskRepo.remove(idParam);
         if (!ok) {
             return res.status(404).json({
                 error: {
@@ -96,6 +113,11 @@ const deleteTask = async (req, res, next) => {
                 }
             });
         }
+        const io = req.app.get("io");
+        if (io) {
+            io.to("tasks:global").emit("task:deleted", { taskId: parseInt(idParam) });
+        }
+
         res.status(204).send();
     } catch (err) { next(err); }
 };
