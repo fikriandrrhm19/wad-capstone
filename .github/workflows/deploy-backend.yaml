@@ -49,7 +49,9 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Archive Docker Image
-        run: docker save wad-backend:latest -o wad-backend-latest.tar
+        run: |
+          docker save wad-backend:latest -o wad-backend-latest.tar
+          sudo chmod 666 wad-backend-latest.tar
 
       - name: Copy Files to VPS
         uses: appleboy/scp-action@v0.1.7
