@@ -8,6 +8,8 @@ on:
       - '**/*.js'
       - 'package*.json'
       - 'prisma/**'
+      - 'docker-compose.yml'
+      - 'Caddyfile'
   workflow_dispatch:
 
 jobs:
@@ -59,7 +61,7 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "docker-compose.yml,wad-backend-latest.tar"
+          source: "docker-compose.yml,Caddyfile,wad-backend-latest.tar"
           target: "/app/wad-project"
 
       - name: Execute Remote SSH Commands
@@ -92,5 +94,7 @@ jobs:
             docker compose up -d
 
             chmod 600 .env
+
+            docker run --rm --network wad-project_wad-network wad-backend:latest npx prisma db push --url ${DATABASE_URL}
 
             docker image prune -f

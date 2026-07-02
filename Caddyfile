@@ -1,0 +1,21 @@
+wad-api.fai.my.id {
+    reverse_proxy wad-backend-api:3000
+}
+
+wad.fai.my.id {
+    handle /api/* {
+        reverse_proxy wad-backend-api:3000 {
+            header_up -X-Forwarded-For
+        }
+    }
+    
+    handle /auth/* {
+        reverse_proxy wad-backend-api:3000 {
+            header_up -X-Forwarded-For
+        }
+    }
+
+    handle {
+        reverse_proxy wad-frontend-app:8080
+    }
+}

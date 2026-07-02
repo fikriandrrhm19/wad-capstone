@@ -1,5 +1,8 @@
+version: '3.8'
+
 networks:
   wad-network:
+    name: wad-project_wad-network
     driver: bridge
 
 volumes:
@@ -49,6 +52,7 @@ services:
     depends_on:
       wad-postgres-db:
         condition: service_healthy
+        
   wad-reverse-proxy:
     image: caddy:2-alpine
     container_name: wad-caddy-proxy
@@ -56,8 +60,8 @@ services:
     ports:
       - "80:80"  
       - "443:443"
-    command: caddy reverse-proxy --from wad-api.fai.my.id --to wad-backend-api:3000
     volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
     networks:

@@ -13,8 +13,6 @@ RUN npm ci --only=production
 
 RUN npx prisma generate
 
-RUN rm -rf prisma/schema.prisma prisma/migrations
-
 COPY src ./src
 
 FROM alpine:3.23.5
