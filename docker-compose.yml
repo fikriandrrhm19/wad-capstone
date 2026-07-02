@@ -1,0 +1,43 @@
+networks:
+  wad-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+
+services:
+  wad-postgres-db:
+    image: postgres:16-alpine
+    container_name: wad-postgres-database
+    restart: always
+    environment:
+      POSTGRES_USER: waduser
+      POSTGRES_PASSWORD: wadpass123
+      POSTGRES_DB: wadcapstone
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - wad-network
+  wad-backend-api:
+    image: wad-backend:latest
+    container_name: wad-backend-app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=${PORT}
+      - NODE_ENV=${NODE_ENV}
+      - APP_NAME=${APP_NAME}
+      - APP_VERSION=${APP_VERSION}
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
+      - JWT_ACCESS_EXPIRES_IN=${JWT_ACCESS_EXPIRES_IN}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - JWT_REFRESH_EXPIRES_IN=${JWT_REFRESH_EXPIRES_IN}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+    networks:
+      - wad-network
+    depends_on:
+      wad-postgres-db:
+        condition: service_healthy

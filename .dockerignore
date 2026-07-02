@@ -1,0 +1,13 @@
+node_modules
+npm-debug.log
+
+media/
+postman_collections/
+README.md
+LICENSE
+
+.env
+.env.*
+
+git
+gitignore
