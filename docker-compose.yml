@@ -5,6 +5,10 @@ networks:
 volumes:
   postgres_data:
     driver: local
+  caddy_data:
+    driver: local
+  caddy_config:
+    driver: local
 
 services:
   wad-postgres-db:
@@ -29,8 +33,6 @@ services:
     image: wad-backend:latest
     container_name: wad-backend-app
     restart: always
-    ports:
-      - "3000:3000"
     environment:
       - PORT=${PORT}
       - NODE_ENV=${NODE_ENV}
@@ -47,3 +49,18 @@ services:
     depends_on:
       wad-postgres-db:
         condition: service_healthy
+  wad-reverse-proxy:
+    image: caddy:2-alpine
+    container_name: wad-caddy-proxy
+    restart: always
+    ports:
+      - "80:80"  
+      - "443:443"
+    command: caddy reverse-proxy --from wad-api.fai.my.id --to wad-backend-api:3000
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - wad-network
+    depends_on:
+      - wad-backend-api
