@@ -90,11 +90,14 @@ jobs:
             echo "JWT_REFRESH_EXPIRES_IN=7d" >> .env
             echo "ALLOWED_ORIGINS=${ALLOWED_ORIGINS}" >> .env
             
-            docker compose down --remove-orphans
-            docker compose up -d --wait
-
             chmod 600 .env
-
+            
+            docker compose down --remove-orphans
+            
+            docker compose up -d > /dev/null 2>&1
+            
+            sleep 5
+            
             docker run --rm --network wad-project_wad-network wad-backend:latest npx prisma db push --url ${DATABASE_URL}
-
+            
             docker image prune -f
