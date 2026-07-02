@@ -19,6 +19,12 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - wad-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U waduser -d wadcapstone"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   wad-backend-api:
     image: wad-backend:latest
     container_name: wad-backend-app
