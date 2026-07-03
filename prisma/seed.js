@@ -17,6 +17,11 @@ async function main() {
     await prisma.category.deleteMany();
     await prisma.refreshToken.deleteMany();
     await prisma.user.deleteMany();
+    const userCount = await prisma.user.count();
+    if (userCount > 0) {
+        console.log('Database sudah ada isi, seeding dilewati.');
+        return;
+    }
     // ─── Buat Categories ─────────────────────────────────
     const categories = await Promise.all([
         prisma.category.create({ data: { name: 'Belajar', color: '#6366F1' } }),

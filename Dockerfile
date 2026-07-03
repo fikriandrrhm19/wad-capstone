@@ -36,4 +36,4 @@ EXPOSE 3000
 
 ENV NODE_ENV=production
 
-ENTRYPOINT ["sh", "-c", "npx prisma db push && node src/index.js"]
+CMD ["node", "src/index.js"]
