@@ -98,6 +98,10 @@ jobs:
             
             sleep 5
             
-            docker run --rm --network wad-project_wad-network wad-backend:latest npx prisma db push --url ${DATABASE_URL}
+            docker run --rm \
+              --network wad-project_wad-network \
+              -e DATABASE_URL="${DATABASE_URL}" \
+              wad-backend:latest \
+              npx prisma db push
             
             docker image prune -f
