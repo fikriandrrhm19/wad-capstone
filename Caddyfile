@@ -10,18 +10,34 @@ wad.fai.my.id {
         }
     }
 
+    handle /users* {
+        rewrite * /api/v1{uri}
+        reverse_proxy wad-backend-api:3000 {
+            header_up -X-Forwarded-For
+        }
+    }
+
+    handle /milestones* {
+        rewrite * /api/v1{uri}
+        reverse_proxy wad-backend-api:3000 {
+            header_up -X-Forwarded-For
+        }
+    }
+    
     handle /api/* {
         reverse_proxy wad-backend-api:3000 {
             header_up -X-Forwarded-For
         }
     }
     
+    # Rute Auth
     handle /auth/* {
         reverse_proxy wad-backend-api:3000 {
             header_up -X-Forwarded-For
         }
     }
 
+    # Rute Frontend
     handle {
         reverse_proxy wad-frontend-app:8080
     }
