@@ -58,6 +58,10 @@ app.use('/auth/login', authLimiter);
 app.use('/auth/refresh', sensitiveLimiter);
 app.use('/auth', authRoutes);
 
+app.use('/tasks', tasksRoutes); 
+app.use('/users', usersRoutes);
+app.use('/milestones', milestonesRoutes);
+
 //app.use('/api/v1', authenticate);
 app.use('/api/v1/tasks', tasksRoutes);
 app.use('/api/v1/users', usersRoutes);
