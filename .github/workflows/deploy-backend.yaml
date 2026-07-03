@@ -96,10 +96,18 @@ jobs:
             
             docker compose up -d > /dev/null 2>&1
             
-            sleep 5
+            sleep 15
             
-            docker run --rm -e DATABASE_URL="${DATABASE_URL}" wad-backend:latest npx prisma db push
+            docker run --rm \
+              --network wad-project_wad-network \
+              -e DATABASE_URL="${DATABASE_URL}" \
+              wad-backend:latest \
+              npx prisma db push
             
-            docker run --rm -e DATABASE_URL="${DATABASE_URL}" wad-backend:latest node prisma/seed.js
+            docker run --rm \
+              --network wad-project_wad-network \
+              -e DATABASE_URL="${DATABASE_URL}" \
+              wad-backend:latest \
+              node prisma/seed.js
             
             docker image prune -f
