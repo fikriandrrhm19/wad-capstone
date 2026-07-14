@@ -63,11 +63,13 @@ const milestoneRepository = {
             if (data.dueDate !== undefined) updatePayload.dueDate = data.dueDate ? new Date(data.dueDate) : null;
             if (data.status !== undefined) updatePayload.status = data.status.toUpperCase();
 
+            const where = { id: Number(id) };
+            if (userId !== undefined) {
+                where.userId = Number(userId);
+            }
+
             const result = await prisma.milestone.updateMany({
-                where: {
-                    id: Number(id),
-                    userId: Number(userId)
-                },
+                where,
                 data: updatePayload
             });
 
@@ -81,11 +83,13 @@ const milestoneRepository = {
 
     async remove(id, userId) {
         try {
+            const where = { id: Number(id) };
+            if (userId !== undefined) {
+                where.userId = Number(userId);
+            }
+
             const result = await prisma.milestone.deleteMany({
-                where: {
-                    id: Number(id),
-                    userId: Number(userId)
-                }
+                where
             });
 
             return result.count > 0;
