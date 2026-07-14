@@ -66,6 +66,14 @@ const updateMilestone = async (req, res, next) => {
         const io = req.app.get("io");
         if (io) {
             io.to("tasks:global").emit("milestone:updated", { milestone });
+            
+            if (req.user.userId !== milestone.userId) {
+                io.to(`user:${milestone.userId}`).emit("notification", {
+                    type: "INFO",
+                    title: "Milestone Diperbarui Admin",
+                    message: `Milestone "${milestone.title}" milik Anda telah diperbarui oleh Administrator.`
+                });
+            }
         }
         res.status(200).json({ message: 'Milestone berhasil diperbarui.', data: milestone });
     } catch (err) { next(err); }
