@@ -10,7 +10,6 @@ const parseSafeDate = (value) => {
 };
 
 const taskRepository = {
-    // ─── Ambil semua task dengan filter, sort, dan pagination ──
     async findMany({ userId, status, priority, sort = 'createdAt', order = 'desc', limit = 10, offset = 0 } = {}) {
         const where = {};
         if (userId) where.userId = Number(userId);
@@ -32,7 +31,6 @@ const taskRepository = {
         return { data, total };
     },
 
-    // ─── Cari task by ID ────────────────────────────────────
     async findById(id) {
         return prisma.task.findUnique({
             where: { id: Number(id) },
@@ -43,7 +41,6 @@ const taskRepository = {
         });
     },
 
-    // ─── Buat task baru ─────────────────────────────────────
     async create(data) {
         return prisma.task.create({
             data: {
@@ -54,6 +51,7 @@ const taskRepository = {
                 dueDate: parseSafeDate(data.dueDate),
                 userId: Number(data.userId),
                 categoryId: data.categoryId ? Number(data.categoryId) : null,
+                milestoneId: data.milestoneId ? Number(data.milestoneId) : null,
             },
             include: {
                 user: { select: { id: true, name: true, email: true } },
@@ -62,7 +60,6 @@ const taskRepository = {
         });
     },
 
-    // ─── Update sebagian (PATCH) ─────────────────────────────
     async update(id, data) {
         try {
             const updatePayload = {};
@@ -77,6 +74,7 @@ const taskRepository = {
             }
             
             if (data.categoryId !== undefined) updatePayload.categoryId = data.categoryId ? Number(data.categoryId) : null;
+            if (data.milestoneId !== undefined) updatePayload.milestoneId = data.milestoneId ? Number(data.milestoneId) : null;
             
             return await prisma.task.update({
                 where: { id: Number(id) },
@@ -87,13 +85,11 @@ const taskRepository = {
                 },
             });
         } catch (e) {
-            // P2025: Record not found
             if (e.code === 'P2025') return null;
             throw e;
         }
     },
 
-    // ─── Hapus task ──────────────────────────────────────────
     async remove(id) {
         try {
             await prisma.task.delete({ where: { id: Number(id) } });
@@ -104,7 +100,6 @@ const taskRepository = {
         }
     },
 
-    // ─── Ambil semua task milik user tertentu (JOIN) ─────────
     async findByUser(userId) {
         return prisma.user.findUnique({
             where: { id: Number(userId) },
