@@ -13,10 +13,13 @@ const tasksRoutes = require('./routes/tasks.routes');
 const usersRoutes = require('./routes/users.routes');
 const adminRoutes = require('./routes/admin.routes');
 const milestonesRoutes = require('./routes/milestones.routes');
-//const authenticate = require('./middleware/authenticate');
+const authenticate = require('./middleware/authenticate');
 const setupSwagger = require('./docs/swagger');
 
 const app = express();
+
+app.set('trust proxy', 1);
+
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -58,7 +61,7 @@ app.use('/auth/login', authLimiter);
 app.use('/auth/refresh', sensitiveLimiter);
 app.use('/auth', authRoutes);
 
-//app.use('/api/v1', authenticate);
+app.use('/api/v1', authenticate);
 app.use('/api/v1/tasks', tasksRoutes);
 app.use('/api/v1/users', usersRoutes);
 app.use('/api/v1/admin', adminRoutes);

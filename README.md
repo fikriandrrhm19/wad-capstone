@@ -1,188 +1,290 @@
-# WAD Task Management Platform - Milestone Project
+# WAD Task Management Platform - Backend & API
 
-[![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square\&logo=node.js\&logoColor=white)](https://nodejs.org/)
-[![Express.js](https://img.shields.io/badge/Express.js-000000?style=flat-square\&logo=express\&logoColor=white)](https://expressjs.com/)
-[![Prisma ORM](https://img.shields.io/badge/Prisma_ORM-2D3748?style=flat-square\&logo=prisma\&logoColor=white)](https://www.prisma.io/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square\&logo=postgresql\&logoColor=white)](https://www.postgresql.org/)
-[![Swagger](https://img.shields.io/badge/Swagger_OpenAPI-85EA2D?style=flat-square\&logo=swagger\&logoColor=black)](https://swagger.io/)
-![Status](https://img.shields.io/badge/Status-UTS%20Verified-success?style=flat-square)
+RESTful API berbasis Node.js, Express, dan PostgreSQL untuk manajemen tugas. Aplikasi mendukung autentikasi JWT, komunikasi *real-time* menggunakan Socket.IO, serta modul **Milestone** untuk melacak progres proyek.
 
-RESTful API berbasis Node.js dan Express untuk manajemen tugas yang dilengkapi dengan autentikasi JWT, input validation Joi, dan dukungan untuk pengelolaan milestone perencanaan dan tracking progress task.
+Proyek ini dikembangkan sebagai penugasan **Ujian Akhir Semester (UAS)** mata kuliah **Web Advanced Development 2 (WADV2)**, Program Studi S1 Sistem Informasi, Fakultas Ilmu Komputer, Universitas Cakrawala.
 
-Proyek ini merupakan pengembangan lanjutan dari aplikasi **WAD Capstone** dan dikerjakan sebagai bagian dari **Ujian Tengah Semester (UTS)** mata kuliah **Web Advanced Development 2 (WADV2)** pada Program Studi S1 Sistem Informasi dan Teknologi, Fakultas Ilmu Komputer, Universitas Cakrawala.
+Implementasi mencakup seluruh materi praktikum **Week 1-9**, mulai dari pengembangan REST API, autentikasi dan otorisasi, React SPA, komunikasi *real-time* dengan WebSocket, hingga *deployment* ke VPS menggunakan Nginx, PM2, HTTPS, dan pipeline CI/CD dengan GitHub Actions.
 
-## Features
+## Project Links
 
-Proyek ini mengimplementasikan fitur-fitur yang dibangun selama praktikum dan menambahkan modul Milestone sebagai kebutuhan khusus untuk UTS.
+- **Backend Repository:** https://github.com/fikriandrrhm19/wad-capstone
+- **Frontend Repository:** https://github.com/fikriandrrhm19/wad-frontend
+- **Live Application:** https://wad.fai.my.id
+- **API Documentation (Swagger UI):** https://wad-api.fai.my.id/api/docs
 
-* **Project Structure & Environment Configuration (Week 1)**: Membangun struktur proyek Node.js dan Express, `.env` untuk konfigurasi environment, `.gitignore` untuk mengabaikan file yang tidak perlu di-track Git, dan `nodemon` untuk mendukung proses development.
-
-* **Input Validation & Standardized Error Response (Week 2)**: Menggunakan **Joi** untuk memvalidasi data input sebelum diproses lebih lanjut. Pesan validasi menggunakan Bahasa Indonesia dan seluruh informasi error mengikuti format `{ error: { code, message, details } }`.
-
-* **Database Relations & Data Integrity (Week 3)**: Menggunakan PostgreSQL dan Prisma ORM untuk mengelola relasi antar-entitas. Implementasi *foreign key* dan *referential actions* membantu menjaga konsistensi data saat terjadi perubahan/penghapusan record yang saling berhubungan.
-
-* **Authentication & Session Management (Week 6)**: Menggunakan **Argon2id** untuk hashing password dan **JSON Web Token (JWT)** untuk autentikasi. Mendukung *access token*, *refresh token*, *token rotation*, dan *reuse detection* sesuai kebutuhan praktikum.
-
-* **Security Hardening & Role-Based Authorization (Week 7)**: Mengamankan ekosistem API dengan **Helmet**, **CORS**, anti-XSS *input sanitization*, multi-tiered **Rate Limiting**, serta **RBAC** (*Role-Based Access Control*) dan *Resource Ownership Check*.
-
-* **Milestone Module (UTS)**: Menambahkan entitas `Milestone` sebagai target pencapaian dalam proyek. Setiap milestone dapat memiliki beberapa task yang terhubung melalui relasi database.
-
-## Backend Architecture
-
-Aplikasi ini menggunakan *layered architecture* guna memisahkan responsibility setiap komponen sehingga kode lebih terstruktur dan mudah di-maintenance.
-
-### Tech Stack
-
-| Category          | Technology         | Tujuan                               |
-| ----------------- | ------------------ | ------------------------------------ |
-| Runtime           | Node.js (v20+)     | Running aplikasi backend             |
-| Framework         | Express.js         | Routing, middleware, dan HTTP server |
-| ORM               | Prisma ORM         | Akses dan pengelolaan database       |
-| Database          | PostgreSQL         | Penyimpanan data relasional          |
-| Authentication    | Argon2id, JWT      | Hashing password dan autentikasi     |
-| Validation        | Joi                | Validasi request                     |
-| API Documentation | Swagger UI Express | Dokumentasi API yang interaktif      |
-| Security Hardening| Helmet, CORS       | Mengamankan HTTP headers & Cross-Origin requests |
-| Rate Limiter      | express-rate-limit | Mencegah serangan Brute-Force & DoS              |
-| Sanitization      | xss                | Membersihkan request body dari injeksi script XSS |
-
-### Project Structure
+## Struktur Proyek
 
 ```text
 wad-capstone
-├─ media/                                       # Dokumentasi dan screenshot pendukung UTS
-│  ├─ erd/                                      # Diagram ERD database
-│  ├─ prisma/                                   # Screenshot data Prisma Studio
-│  └─ swagger/                                  # Screenshot Swagger UI
-├─ postman_collections/
-│  ├─ WAD-Capstone-Lab1-6.postman_collection.json  # Collection praktikum Week 1-6
-│  ├─ WAD-Capstone-Lab7.postman_collection.json    # Collection praktikum Week 7
-│  └─ WAD-Capstone-UTS.postman_collection.json     # Collection pengujian Milestone
-├─ prisma/
-│  ├─ migrations/                               # Riwayat migrasi database
-│  ├─ schema.prisma                             # Definisi model dan relasi database
-│  └─ seed.js                                   # Data awal (seed)
-└─ src/
-   ├─ config/                                   # Konfigurasi aplikasi dan Prisma
-   ├─ controllers/                              # Handler request dan response
-   ├─ docs/                                     # Konfigurasi Swagger
-   ├─ middleware/                               # Authentication dan validation middleware
-   ├─ repositories/                             # Database access layer
-   ├─ routes/                                   # Definisi endpoint API
-   └─ validators/                               # Schema validation Joi
+├── src/
+│   ├── config/          # Konfigurasi aplikasi
+│   ├── controllers/     # Handler HTTP request
+│   ├── middleware/      # Authentication, validation, authorization
+│   ├── repositories/    # Akses data melalui Prisma ORM
+│   ├── routes/          # Definisi endpoint REST API
+│   ├── services/        # Business logic
+│   ├── validators/      # Validasi request dengan Joi
+│   ├── docs/            # Konfigurasi Swagger/OpenAPI
+│   ├── socket.js        # Konfigurasi Socket.IO
+│   └── index.js         # Entry point aplikasi
+├── prisma/              # Schema, migration, dan seed database
+├── media/               # Dokumentasi gambar dan screenshot
+├── postman_collections/ # Postman Collection
+├── package.json
+└── README.md
 ```
 
-## Entity Relationship Diagram (ERD)
+## Fitur Utama Aplikasi
+
+1. **RESTful API & Database**
+   - Full CRUD untuk Task dan Milestone
+   - Prisma ORM dengan PostgreSQL
+   - Pagination, filtering, sorting, dan dokumentasi OpenAPI (Swagger)
+
+2. **Authentication, Authorization & Security**
+   - Hashing password dengan `argon2id`
+   - JWT Access Token dan Refresh Token dengan *token rotation*
+   - Validasi request menggunakan Joi
+   - Role-Based Access Control (RBAC)
+   - Security middleware: Helmet, CORS, Rate Limiting, dan Input Sanitization
+
+3. **React Single Page Application**
+   - React + Vite
+   - React Router untuk *client-side routing*
+   - Axios Interceptors untuk autentikasi dan *automatic token refresh*
+   - Context API untuk manajemen state autentikasi, WebSocket, dan notifikasi
+
+4. **Real-Time Communication**
+   - Socket.IO untuk sinkronisasi data secara *real-time*
+   - Broadcast perubahan Task dan Milestone
+   - Online presence, toast notification, dan *automatic reconnection*
+
+5. **Deployment & CI/CD**
+   - Deployment ke VPS Ubuntu
+   - PM2 sebagai process manager
+   - Nginx Reverse Proxy dengan HTTPS (Let's Encrypt)
+   - Pipeline CI/CD menggunakan GitHub Actions melalui SSH Deployment
+
+6. **Milestone Module**
+   - Manajemen Milestone beserta relasi Task
+   - Perhitungan *progress* berdasarkan status Task
+   - Update *progress bar* secara *real-time* tanpa *page refresh*
+
+
+## Deployment Architecture
+
+Aplikasi di-*deploy* di VPS menggunakan arsitektur *reverse proxy* dengan isolate service. Seluruh traffic-access publik diterima oleh Nginx, kemudian diteruskan ke service frontend/backend yang berjalan pada port lokal dengan PM2 sebagai *process manager*.
 
 <p align="center">
-  <img src="media/erd/erd-database-specification.png" alt="ERD Database">
+  <img src="./media/architecture/deployment-architecture.jpg" alt="Deployment Architecture" width="900">
 </p>
 
-Diagram di atas menunjukkan struktur database dan relasi antar-entitas yang digunakan dalam aplikasi.
+### Arsitektur Deployment
 
-## Database Preview
+1. **Cloudflare**
+   - Mengelola DNS dan pengaturan HTTPS untuk domain.
+   - Seluruh traffic diteruskan ke VPS melalui port `80` dan `443`.
 
-Berikut tampilan data awal yang dihasilkan dari proses seeding database menggunakan Prisma Studio.
+2. **Nginx Reverse Proxy**
+   - Menerima seluruh request dari internet.
+   - Meneruskan request `/` ke frontend (`127.0.0.1:3003`).
+   - Meneruskan request `/api` dan `/socket.io` ke backend (`127.0.0.1:3000`), termasuk koneksi WebSocket.
+
+3. **PM2 Process Manager**
+   - Menjalankan dan memonitor proses aplikasi Node.js.
+   - Melakukan *automatic restart* ketika aplikasi mengalami kendala.
+   - Mengaktifkan kembali aplikasi secara otomatis setelah VPS me-*reboot*.
+
+4. **Application Layer**
+   - Frontend React berjalan di port `3003`.
+   - Backend Express dan Socket.IO berjalan di port `3000`.
+   - Seluruh port aplikasi hanya bisa diakses melalui Nginx dan tidak diekspos langsung ke publik.
+
+5. **Database Layer**
+   - Backend mengakses PostgreSQL melalui Prisma ORM.
+   - Database hanya melakukan *binding* pada `localhost` sehingga tidak dapat diakses langsung dari internet.
+
+## Socket.IO Events
+
+Berikut adalah daftar event *real-time* yang digunakan untuk sinkronisasi data antara backend dan frontend.
+
+| Event | Direction | Deskripsi | Payload |
+| --- | --- | --- | --- |
+| `task:created` | Server → Client | Task berhasil dibuat | `{ task }` |
+| `task:updated` | Server → Client | Data Task berhasil diperbarui | `{ task }` |
+| `task:deleted` | Server → Client | Task berhasil dihapus | `{ taskId }` |
+| `milestone:created` | Server → Client | Milestone berhasil dibuat | `{ milestone }` |
+| `milestone:updated` | Server → Client | Data Milestone atau progres diperbarui | `{ milestone }` |
+| `milestone:deleted` | Server → Client | Milestone berhasil dihapus | `{ milestoneId }` |
+| `notification` | Server → Client | Mengirim notifikasi *toast* ke pengguna | `{ type, title, message }` |
+| `users:online` | Server → Client | Memperbarui jumlah pengguna yang sedang terhubung | `{ count }` |
+| `token:refreshed`* | Client → Client | Menginformasikan bahwa *access token* telah diperbarui | `Custom DOM Event` |
+
+> **Catatan:** `token:refreshed` bukan merupakan event Socket.IO. Event tersebut merupakan *Custom DOM Event* yang dipicu oleh Axios Interceptor setelah *refresh token* berhasil untuk menginisialisasi ulang koneksi WebSocket dengan *access token* terbaru.
+
+## API Documentation
+
+Swagger UI tersedia untuk mempermudah explore dan pengujian endpoint REST API.
 
 <p align="center">
-  <img src="media/prisma/01-prisma-seed-initial.png" alt="Prisma Seed Data">
+  <img src="./media/swagger/01-swagger-milestones-overview.png" width="900">
 </p>
 
-## Getting Started
+## Database Schema
 
-Ikuti langkah-langkah berikut untuk menjalankan aplikasi di environment lokal.
+Diagram berikut menggambarkan relasi antar entitas yang digunakan oleh aplikasi.
 
-### Prerequisites
+<p align="center">
+  <img src="./media/erd/erd-database-specification.png" width="900">
+</p>
 
-Pastikan perangkat Anda telah memenuhi kebutuhan berikut:
+## Screenshots
 
-* Node.js v20 atau lebih baru
-* PostgreSQL (lokal atau melalui Docker)
-* npm sebagai package manager
+Berikut beberapa tangkapan layar yang merepresentasikan fitur utama dari aplikasi.
 
-### Installation
+### Frontend & Authentication
 
-Clone repository dan install seluruh dependency yang diperlukan:
+<p align="center">
+  <img src="./media/01-frontend-spa/02-auth-login-page.png" alt="Login Page" width="48%">
+  <img src="./media/01-frontend-spa/05-tasks-filter-in-progress.png" alt="Tasks Dashboard" width="48%">
+</p>
+
+### Real-Time WebSocket
+
+<p align="center">
+  <img
+    src="./media/02-realtime-websocket/01-websocket-navbar-indicators.png"
+    alt="Online Presence"
+    width="48%"
+    style="vertical-align: middle;"
+  >
+  <img
+    src="./media/02-realtime-websocket/03-cross-tenant-update-toast.png"
+    alt="Real-Time Notification"
+    width="48%"
+    style="vertical-align: middle;"
+  >
+</p>
+
+### Milestone Module
+
+<p align="center">
+  <img src="./media/04-milestone-model/01-milestones-dashboard.png" alt="Milestone Dashboard" width="48%">
+  <img src="./media/04-milestone-model/04-realtime-progress-bar-update.png" alt="Real-Time Progress" width="48%">
+</p>
+
+### Deployment & Infrastructure
+
+<p align="center">
+  <img
+    src="./media/03-vps-deployment/01-pm2-status-vps.png"
+    alt="PM2 Process Manager"
+    width="48%"
+    style="vertical-align: middle;"
+  >
+  <img
+    src="./media/03-vps-deployment/04-github-actions-pipeline-success.png"
+    alt="GitHub Actions Pipeline"
+    width="48%"
+    style="vertical-align: middle;"
+  >
+</p>
+
+## Local Development Setup
+
+Ikuti langkah berikut untuk menjalankan backend di environment *development*.
+
+### Prasyarat
+
+Pastikan perangkat telah memenuhi kebutuhan berikut:
+
+- Node.js **v20** atau lebih baru
+- PostgreSQL **v15+**
+- Git
+- npm
+- Frontend (`wad-frontend`) berjalan pada `http://localhost:5173` apabila ingin melakukan pengujian integrasi
+
+### 1. Clone Repository
 
 ```bash
 git clone https://github.com/fikriandrrhm19/wad-capstone.git
 cd wad-capstone
+```
+
+### 2. Install Dependencies
+
+Install seluruh package yang dibutuhkan aplikasi.
+
+```bash
 npm install
 ```
 
-### Environment Variables
+### 3. Konfigurasi Environment Variables
 
-Buat file `.env` pada root project dan sesuaikan value-nya dengan environment yang digunakan:
+Buat file `.env` pada direktori root proyek.
 
-```env
-PORT=3000
-NODE_ENV=development
-
-DATABASE_URL="postgresql://postgres:postgres_password@localhost:5432/wad_capstone_db?schema=public"
-
-JWT_SECRET="your-access-token-secret"
-JWT_REFRESH_SECRET="your-refresh-token-secret"
-JWT_EXPIRES_IN="15m"
-JWT_REFRESH_EXPIRES_IN="7d"
+```
+cp .env.example .env
 ```
 
-### Database Setup
+> Sesuaikan value `DATABASE_URL` dengan konfigurasi PostgreSQL pada environment lokal Anda.
 
-Jalankan migrasi database dan seed data awal:
+### 4. Inisialisasi Database
+
+Pastikan service PostgreSQL telah berjalan, kemudian jalankan migrasi database.
 
 ```bash
 npx prisma migrate dev
+```
+
+Generate Prisma Client.
+
+```bash
+npx prisma generate
+```
+
+Selanjutnya isi database dengan data awal (*seed*).
+
+```bash
 npx prisma db seed
 ```
 
-Data seed mencakup user, category, milestone, dan task untuk kebutuhan pengujian.
+### 5. Running Aplikasi
 
-### Run the Application
-
-Jalankan server dalam mode development:
+Jalankan backend pada mode development.
 
 ```bash
 npm run dev
 ```
 
-Secara default aplikasi akan running pada:
+Secara default aplikasi akan tersedia di alamat berikut:
 
-```text
-http://localhost:3000
-```
+| Service | URL |
+|---------|-----|
+| REST API | http://localhost:3000 |
+| Swagger UI | http://localhost:3000/api/docs |
+| Health Check | http://localhost:3000/health |
 
-## API Documentation
+### 6. Verifikasi Instalasi
 
-Dokumentasi API tersedia melalui Swagger UI dan mencakup seluruh endpoint autentikasi, task, category, dan milestone.
+Pastikan aplikasi berhasil berjalan dengan mengakses endpoint berikut: `GET http://localhost:3000/health`
 
-```text
-http://localhost:3000/api/docs
-```
+Apabila backend berhasil dijalankan, endpoint tersebut akan mengembalikan status HTTP `200 OK`.
 
-<p align="center">
-  <img src="media/swagger/01-swagger-milestones-overview.png" alt="Swagger Overview">
-</p>
+Swagger UI juga dapat diakses melalui: `http://localhost:3000/api/docs`
 
-## Testing
 
-Tabel berikut merangkum skenario pengujian yang ada pada collection **WAD-Capstone-UTS.postman_collection.json**.
+## API Testing (Postman)
 
-| No | Test Case                | Method   | Endpoint               | Expected Status    | Description                                                                                                  |
-| -- | ------------------------ | -------- | ---------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------ |
-| 1  | Authenticate User        | `POST`   | `/auth/login`          | `200 OK`           | Login menggunakan akun yang tersedia pada data seed dan memperoleh JWT access token.                         |
-| 2  | Block Guest Request      | `GET`    | `/api/v1/milestones`   | `401 Unauthorized` | Memastikan endpoint milestone tidak dapat diakses tanpa autentikasi.                                         |
-| 3  | List All User Milestones | `GET`    | `/api/v1/milestones`   | `200 OK`           | Mengambil seluruh milestone milik pengguna yang sedang login beserta relasi task terkait.                    |
-| 4  | Validate Missing Title   | `POST`   | `/api/v1/milestones`   | `400 Bad Request`  | Memastikan validasi Joi menolak request tanpa field `title`.                                                 |
-| 5  | Validate Corrupted Date  | `POST`   | `/api/v1/milestones`   | `400 Bad Request`  | Memastikan validasi Joi menolak format tanggal yang tidak valid.                                             |
-| 6  | Create Milestone         | `POST`   | `/api/v1/milestones`   | `201 Created`      | Membuat data milestone baru.                                                                                 |
-| 6b | Link Task to Milestone   | `PATCH`  | `/api/v1/tasks/18`      | `200 OK`           | Menghubungkan task ke milestone melalui field `milestoneId`.                                                 |
-| 7  | Data Isolation Security  | `GET`    | `/api/v1/milestones/4` | `404 Not Found`    | Memastikan pengguna tidak dapat mengakses milestone milik pengguna lain.                                     |
-| 8  | Partial Update Status    | `PATCH`  | `/api/v1/milestones/11` | `200 OK`           | Memperbarui status milestone menjadi `ACHIEVED`.                                                             |
-| 8b | Reject Empty PATCH       | `PATCH`  | `/api/v1/milestones/11` | `400 Bad Request`  | Memastikan request update dengan body kosong akan ditolak oleh validator.                                         |
-| 9  | Delete Milestone Data    | `DELETE` | `/api/v1/milestones/11` | `200 OK`           | Menghapus data milestone dari database.                                                                      |
-| 10 | Verify SetNull Behavior  | `GET`    | `/api/v1/tasks/18`      | `200 OK`           | Memastikan penghapusan milestone tidak menghapus task yang terkait dan `milestoneId` berubah menjadi `null`. |
+Direktori `postman_collections/` berisi kumpulan **Postman Collection** yang dapat digunakan untuk menguji seluruh endpoint REST API selama proses development.
+
+- `WAD-Capstone-Lab1-6.postman_collection.json` — Endpoint praktikum Week 1-6
+- `WAD-Capstone-Lab-7.postman_collection.json` — Endpoint autentikasi, RBAC, dan security
+- `WAD-Capstone-UTS.postman_collection.json` — Endpoint lengkap sesuai implementasi UTS
+
+Seluruh koleksi dapat di-import langsung ke Postman melalui menu **Import** untuk mempermudah pengujian endpoint.
 
 ## License
 
-This project is licensed under the MIT License.
-See the LICENSE file for details.
+Proyek ini menggunakan lisensi **MIT License**. Lihat file [`LICENSE`](./LICENSE) untuk informasi selengkapnya.

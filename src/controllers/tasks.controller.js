@@ -1,9 +1,8 @@
 const taskRepo = require('../repositories/task.repository');
-// ─── GET /api/v1/tasks ──────────────────────────────────────
+
 const listTasks = async (req, res, next) => {
     try {
         const { status, priority, sort, order, limit, offset } = req.query;
-
         const userId = req.user.role === 'ADMIN' ? undefined : req.user.userId;
 
         const { data, total } = await taskRepo.findMany({
@@ -31,7 +30,7 @@ const listTasks = async (req, res, next) => {
         });
     } catch (err) { next(err); }
 };
-// ─── POST /api/v1/tasks ─────────────────────────────────────
+
 const createTask = async (req, res, next) => {
     try {
         const userId = req.user.userId;
@@ -39,15 +38,24 @@ const createTask = async (req, res, next) => {
             ...req.body,
             userId: userId
         });
+        
         const io = req.app.get("io");
         if (io) {
-            io.to("tasks:global").emit("task:created", { task });
+            io.to("tasks:global").emit("task:created", task);
             
             io.to(`user:${userId}`).emit("notification", {
                 type: "SUCCESS",
                 title: "Task Berhasil Dibuat",
                 message: `Task "${task.title}" telah ditambahkan.`,
             });
+            
+            if (task.milestoneId) {
+                const milestoneRepo = require('../repositories/milestone.repository');
+                const milestone = await milestoneRepo.findById(task.milestoneId);
+                if (milestone) {
+                    io.to("tasks:global").emit("milestone:updated", milestone);
+                }
+            }
         }
 
         res.status(201).set('Location', `/api/v1/tasks/${task.id}`).json({
@@ -55,10 +63,9 @@ const createTask = async (req, res, next) => {
         });
     } catch (err) { next(err); }
 };
-// ─── GET /api/v1/tasks/:id ──────────────────────────────────
+
 const getTask = async (req, res, next) => {
     try {
-        //const task = await taskRepo.findById(req.params.id);
         const task = req.task;
         if (!task) {
             const fallbackTask = await taskRepo.findById(req.params.id);
@@ -76,7 +83,7 @@ const getTask = async (req, res, next) => {
         res.status(200).json({ data: task });
     } catch (err) { next(err); }
 };
-// ─── PATCH /api/v1/tasks/:id ────────────────────────────────
+
 const updateTask = async (req, res, next) => {
     try {
         const task = await taskRepo.update(req.params.id, req.body);
@@ -85,43 +92,68 @@ const updateTask = async (req, res, next) => {
                 error: {
                     code: 'NOT_FOUND',
                     message: `Task ID ${req.params.id} tidak ditemukan.`,
-                    details: [
-                        { target: 'id', issue: 'Gagal memperbarui, data tidak ditemukan.' }]
+                    details: [{ target: 'id', issue: 'Gagal memperbarui, data tidak ditemukan.' }]
                 }
             });
         }
+        
         const io = req.app.get("io");
         if (io) {
-            io.to("tasks:global").emit("task:updated", { task });
+            io.to("tasks:global").emit("task:updated", task);
+            
+            if (req.user.userId !== task.userId) {
+                io.to(`user:${task.userId}`).emit("notification", {
+                    type: "INFO",
+                    title: "Task Diperbarui Admin",
+                    message: `Task "${task.title}" milik Anda telah diperbarui oleh Administrator.`,
+                });
+            }
+            
+            if (task.milestoneId) {
+                const milestoneRepo = require('../repositories/milestone.repository');
+                const milestone = await milestoneRepo.findById(task.milestoneId);
+                if (milestone) {
+                    io.to("tasks:global").emit("milestone:updated", milestone);
+                }
+            }
         }
 
         res.status(200).json({ data: task });
     } catch (err) { next(err); }
 };
-// ─── DELETE /api/v1/tasks/:id ───────────────────────────────
+
 const deleteTask = async (req, res, next) => {
     try {
         const idParam = req.params.id;
+        const targetTask = await taskRepo.findById(idParam);
         const ok = await taskRepo.remove(idParam);
         if (!ok) {
             return res.status(404).json({
                 error: {
                     code: 'NOT_FOUND',
                     message: `Task ID ${req.params.id} tidak ditemukan.`,
-                    details: [
-                        { target: 'id', issue: 'Gagal menghapus, data tidak ditemukan.' }]
+                    details: [{ target: 'id', issue: 'Gagal menghapus, data tidak ditemukan.' }]
                 }
             });
         }
+        
         const io = req.app.get("io");
         if (io) {
             io.to("tasks:global").emit("task:deleted", { taskId: parseInt(idParam) });
+            
+            if (targetTask && targetTask.milestoneId) {
+                const milestoneRepo = require('../repositories/milestone.repository');
+                const milestone = await milestoneRepo.findById(targetTask.milestoneId);
+                if (milestone) {
+                    io.to("tasks:global").emit("milestone:updated", milestone);
+                }
+            }
         }
 
         res.status(204).send();
     } catch (err) { next(err); }
 };
-// ─── GET /api/v1/users/:userId/tasks ────────────────────────
+
 const getTasksByUser = async (req, res, next) => {
     try {
         if (req.user.role !== 'ADMIN' && Number(req.params.userId) !== req.user.userId) {
@@ -140,8 +172,7 @@ const getTasksByUser = async (req, res, next) => {
                 error: {
                     code: 'NOT_FOUND',
                     message: `User ID ${req.params.userId} tidak ditemukan.`,
-                    details: [
-                        { target: 'userId', issue: 'Data pengguna tidak terdaftar dalam sistem.' }]
+                    details: [{ target: 'userId', issue: 'Data pengguna tidak terdaftar dalam sistem.' }]
                 }
             });
         }
