@@ -22,6 +22,17 @@ const createMilestone = async (req, res, next) => {
         };
         
         const milestone = await milestoneRepo.create(milestoneData);
+
+        const io = req.app.get("io");
+        if (io) {
+            io.to("tasks:global").emit("milestone:created", { milestone });
+            
+            io.to(`user:${userId}`).emit("notification", {
+                type: "SUCCESS",
+                title: "Milestone Berhasil Dibuat",
+                message: `Milestone "${milestone.title}" telah ditambahkan ke proyek.`,
+            });
+        }
         
         res.status(201).json({
             message: 'Milestone berhasil dibuat.',
@@ -77,6 +88,11 @@ const updateMilestone = async (req, res, next) => {
                 }
             });
         }
+
+        const io = req.app.get("io");
+        if (io) {
+            io.to("tasks:global").emit("milestone:updated", { milestone });
+        }
         
         res.status(200).json({ 
             message: 'Milestone berhasil diperbarui.',
@@ -104,6 +120,11 @@ const deleteMilestone = async (req, res, next) => {
                     ]
                 }
             });
+        }
+
+        const io = req.app.get("io");
+        if (io) {
+            io.to("tasks:global").emit("milestone:deleted", { milestoneId: parseInt(milestoneId) });
         }
         
         res.status(200).json({ 
