@@ -1,0 +1,38 @@
+name: Deploy Backend to VPS
+
+on:
+  push:
+    branches:
+      - main
+      - feature/vps-pm2-cicd
+
+jobs:
+  deploy:
+    name: Deploy Backend Application
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Add VPS to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            
+            cd /home/fikri/wadv2/wadv2-be
+            git pull origin ${{ github.ref_name }}
+            npm install --omit=dev
+            npx prisma generate
+            pm2 restart wadv2-be-fikri
+            pm2 list
