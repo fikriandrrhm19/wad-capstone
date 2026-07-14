@@ -101,6 +101,14 @@ const updateTask = async (req, res, next) => {
         if (io) {
             io.to("tasks:global").emit("task:updated", task);
             
+            if (req.user.userId !== task.userId) {
+                io.to(`user:${task.userId}`).emit("notification", {
+                    type: "INFO",
+                    title: "Task Diperbarui Admin",
+                    message: `Task "${task.title}" milik Anda telah diperbarui oleh Administrator.`,
+                });
+            }
+            
             if (task.milestoneId) {
                 const milestoneRepo = require('../repositories/milestone.repository');
                 const milestone = await milestoneRepo.findById(task.milestoneId);
