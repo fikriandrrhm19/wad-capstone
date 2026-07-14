@@ -17,6 +17,9 @@ const authenticate = require('./middleware/authenticate');
 const setupSwagger = require('./docs/swagger');
 
 const app = express();
+
+app.set('trust proxy', 1);
+
 const server = http.createServer(app);
 
 const io = new Server(server, {
