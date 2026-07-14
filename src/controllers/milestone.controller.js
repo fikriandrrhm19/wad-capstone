@@ -1,9 +1,8 @@
 const milestoneRepo = require('../repositories/milestone.repository');
 
-// ─── GET /api/v1/milestones (Ambil Semua Milestone Pengguna) ───
 const listMilestones = async (req, res, next) => {
     try {
-        const userId = req.user.userId;
+        const userId = req.user.role === 'ADMIN' ? undefined : req.user.userId;
         const milestones = await milestoneRepo.findAll(userId);
         
         res.status(200).json({
@@ -14,7 +13,6 @@ const listMilestones = async (req, res, next) => {
     }
 };
 
-// ─── POST /api/v1/milestones (Buat Milestone Baru) ───
 const createMilestone = async (req, res, next) => {
     try {
         const userId = req.user.userId;
@@ -34,10 +32,9 @@ const createMilestone = async (req, res, next) => {
     }
 };
 
-// ─── GET /api/v1/milestones/:id (Ambil Detail Satu Milestone) ───
 const getMilestone = async (req, res, next) => {
     try {
-        const userId = req.user.userId;
+        const userId = req.user.role === 'ADMIN' ? undefined : req.user.userId;
         const milestoneId = req.params.id;
         
         const milestone = await milestoneRepo.findById(milestoneId, userId);
@@ -62,7 +59,6 @@ const getMilestone = async (req, res, next) => {
     }
 };
 
-// ─── PATCH /api/v1/milestones/:id (Pembaruan Parsial Milestone) ───
 const updateMilestone = async (req, res, next) => {
     try {
         const userId = req.user.userId;
@@ -91,7 +87,6 @@ const updateMilestone = async (req, res, next) => {
     }
 };
 
-// ─── DELETE /api/v1/milestones/:id (Hapus Milestone) ───
 const deleteMilestone = async (req, res, next) => {
     try {
         const userId = req.user.userId;

@@ -1,9 +1,9 @@
 const Joi = require('joi');
 
-const VALID_STATUS = ['todo', 'in_progress', 'done'];
-const VALID_PRIORITY = ['low', 'medium', 'high'];
+const VALID_STATUS = ['TODO', 'IN_PROGRESS', 'DONE', 'todo', 'in_progress', 'done'];
+const VALID_PRIORITY = ['LOW', 'MEDIUM', 'HIGH', 'low', 'medium', 'high'];
 const VALID_SORT = ['createdAt', 'updatedAt', 'title', 'priority'];
-const VALID_ORDER = ['asc', 'desc'];
+const VALID_ORDER = ['asc', 'desc', 'ASC', 'DESC'];
 
 const createTaskSchema = Joi.object({
     title: Joi.string().trim().min(1).max(200).required().messages({
@@ -11,9 +11,9 @@ const createTaskSchema = Joi.object({
         'any.required': 'Judul tugas wajib diisi.'
     }),
     description: Joi.string().trim().max(1000).optional().allow('', null),
-    status: Joi.string().valid(...VALID_STATUS).default('todo').messages({ 'any.only': 'Status harus bernilai todo, in_progress, atau done.' }),
-    priority: Joi.string().valid(...VALID_PRIORITY).default('medium').messages({ 'any.only': 'Prioritas harus bernilai low, medium, atau high.' }),
-    dueDate: Joi.date().iso().optional().allow(null).messages({ 'date.format': 'Format tanggal tenggat waktu harus ISO date.' }),
+    status: Joi.string().valid(...VALID_STATUS).default('TODO'),
+    priority: Joi.string().valid(...VALID_PRIORITY).default('MEDIUM'),
+    dueDate: Joi.date().iso().optional().allow(null),
     userId: Joi.number().integer().positive().optional(),
     categoryId: Joi.number().integer().positive().optional().allow(null),
     milestoneId: Joi.number().integer().positive().optional().allow(null)
@@ -25,8 +25,8 @@ const replaceTaskSchema = Joi.object({
         'any.required': 'Judul tugas wajib diisi.'
     }),
     description: Joi.string().trim().max(1000).optional().allow('', null),
-    status: Joi.string().valid(...VALID_STATUS).required().messages({ 'any.only': 'Status wajib diisi dengan nilai yang valid.' }),
-    priority: Joi.string().valid(...VALID_PRIORITY).required().messages({ 'any.only': 'Prioritas wajib diisi dengan nilai yang valid.' }),
+    status: Joi.string().valid(...VALID_STATUS).required(),
+    priority: Joi.string().valid(...VALID_PRIORITY).required(),
     dueDate: Joi.date().iso().optional().allow(null),
     categoryId: Joi.number().integer().positive().optional().allow(null),
     milestoneId: Joi.number().integer().positive().optional().allow(null)
@@ -35,8 +35,8 @@ const replaceTaskSchema = Joi.object({
 const updateTaskSchema = Joi.object({
     title: Joi.string().trim().min(1).max(200).messages({ 'string.empty': 'Judul tugas tidak boleh kosong.' }),
     description: Joi.string().trim().max(1000).allow('', null),
-    status: Joi.string().valid(...VALID_STATUS).messages({ 'any.only': 'Status tidak valid.' }),
-    priority: Joi.string().valid(...VALID_PRIORITY).messages({ 'any.only': 'Prioritas tidak valid.' }),
+    status: Joi.string().valid(...VALID_STATUS),
+    priority: Joi.string().valid(...VALID_PRIORITY),
     dueDate: Joi.date().iso().optional().allow(null),
     categoryId: Joi.number().integer().positive().optional().allow(null),
     milestoneId: Joi.number().integer().positive().optional().allow(null)

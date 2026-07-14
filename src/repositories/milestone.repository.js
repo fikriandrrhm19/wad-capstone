@@ -1,14 +1,16 @@
 const prisma = require('../config/prisma');
 
 const milestoneRepository = {
-    // ─── Ambil Semua Milestone Milik User Tertentu (JOIN dengan Tasks) ───
     async findAll(userId) {
+        const where = {};
+        if (userId !== undefined) {
+            where.userId = Number(userId);
+        }
+
         return await prisma.milestone.findMany({
-            where: { 
-                userId: Number(userId) 
-            },
+            where,
             orderBy: { 
-                dueDate: 'asc' // Diurutkan berdasarkan deadline terdekat
+                dueDate: 'asc'
             },
             include: {
                 tasks: {
@@ -23,20 +25,20 @@ const milestoneRepository = {
         });
     },
 
-    // ─── Cari Milestone Berdasarkan ID dan Kepemilikan User ───
     async findById(id, userId) {
+        const where = { id: Number(id) };
+        if (userId !== undefined) {
+            where.userId = Number(userId);
+        }
+
         return await prisma.milestone.findFirst({
-            where: {
-                id: Number(id),
-                userId: Number(userId)
-            },
+            where,
             include: {
-                tasks: true // JOIN untuk menampilkan detail tugas di dalam milestone ini
+                tasks: true
             }
         });
     },
 
-    // ─── Buat Milestone Baru ───
     async create(data) {
         return await prisma.milestone.create({
             data: {
@@ -52,7 +54,6 @@ const milestoneRepository = {
         });
     },
 
-    // ─── Update Sebagian Data Milestone ───
     async update(id, userId, data) {
         try {
             const updatePayload = {};
@@ -78,7 +79,6 @@ const milestoneRepository = {
         }
     },
 
-    // ─── Hapus Milestone Berdasarkan ID dan Kepemilikan User ───
     async remove(id, userId) {
         try {
             const result = await prisma.milestone.deleteMany({
